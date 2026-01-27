@@ -1,0 +1,6 @@
+  }
+}
+
+.toast-exit {
+  animation: toastOut 0.3s forwards;
+}

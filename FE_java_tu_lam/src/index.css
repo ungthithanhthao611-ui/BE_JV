@@ -1,0 +1,514 @@
+/* :root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+} */
+/* ===============================
+   RESET & BASE (AN TOÀN)
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* ===============================
+   ROOT APP
+================================ */
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ===============================
+   BODY – WEBSITE CAFE
+================================ */
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* ===============================
+   COMMON ELEMENTS
+================================ */
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: 0.3s;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+/* ===============================
+   UTILITIES
+================================ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.text-red {
+  color: #d32f2f;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+/* ===============================
+   HEADER
+================================ */
+.header-wrapper {
+  background: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.top-bar {
+  height: 5px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #eee;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 25px;
+}
+
+.nav-menu a {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+}
+
+.nav-menu a:hover {
+  color: #d32f2f;
+}
+
+.header-icons button {
+  font-size: 18px;
+  margin-left: 15px;
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #d32f2f;
+  color: white;
+  font-size: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===============================
+   HERO SECTION (FULL WIDTH)
+================================ */
+.hero {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  height: 60vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 50px;
+  color: white;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-sub {
+  letter-spacing: 3px;
+  font-size: 18px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.hero-title {
+  font-size: 48px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* ===============================
+   BANNER GRID
+================================ */
+.banner-sec {
+  padding: 40px 0;
+}
+
+.banner-wrap {
+  display: flex;
+  gap: 20px;
+}
+
+.banner-left {
+  flex: 1;
+  height: 320px;
+  background-size: cover;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.banner-item {
+  flex: 1;
+  background-size: cover;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  color: white;
+}
+
+.btn-white {
+  background: white;
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* ===============================
+   MENU SECTION (FULL WIDTH)
+================================ */
+.menu-sec {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: #333;
+  color: white;
+  padding: 60px 0;
+  text-align: center;
+}
+
+.section-head h2 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.section-head p {
+  color: #aaa;
+  margin-bottom: 40px;
+  font-size: 14px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  text-align: left;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.menu-item {
+  display: flex;
+  gap: 15px;
+}
+
+.menu-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-size: cover;
+  flex-shrink: 0;
+}
+
+.menu-info h4 {
+  color: #d32f2f;
+}
+
+.menu-price {
+  font-weight: bold;
+  margin: 4px 0;
+}
+
+.menu-desc {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.btn-outline {
+  border: 1px solid white;
+  padding: 10px 30px;
+  border-radius: 25px;
+  margin-top: 40px;
+  font-weight: bold;
+}
+
+.btn-outline:hover {
+  background: white;
+  color: #333;
+}
+
+/* ===============================
+   PRODUCT CARD
+================================ */
+.prod-card {
+  width: 200px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.prod-img {
+  height: 220px;
+  background-size: cover;
+  position: relative;
+}
+
+.price-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  color: #d32f2f;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.prod-body {
+  padding: 15px;
+  text-align: center;
+}
+
+/* ===============================
+   PROCESS SECTION (FULL WIDTH)
+================================ */
+.process-sec {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: #4e4e4e;
+  color: white;
+  padding: 60px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.process-box {
+  background: #333;
+  padding: 40px;
+  border-radius: 8px;
+  width: 45%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.process-img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-size: cover;
+}
+
+/* ===============================
+   FOOTER (FULL WIDTH)
+================================ */
+.footer {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  background: #1a1a1a;
+  color: #ccc;
+  padding: 60px 0 20px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 40px;
+}
+
+.footer h5 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.footer li {
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+  font-weight: bold;
+  color: #666;
+}
+
+.copyright {
+  text-align: center;
+  font-size: 12px;
+  margin-top: 20px;
+  color: #555;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .menu-grid,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .banner-wrap {
+    flex-direction: column;
+  }
+
+  .process-box {
+    width: 100%;
+  }
+
+  .process-img {
+    display: none;
+  }
+
+  .nav-menu {
+    display: none;
+  }
+}
