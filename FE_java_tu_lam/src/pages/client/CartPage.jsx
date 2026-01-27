@@ -188,7 +188,7 @@
 //                     <td>
 //                       <div className="product-col">
 //                         <img
-//                           src={`http://localhost:8080/images/${item.photo}`}
+//                           src={`${import.meta.env.VITE_API_BASE_URL}/images/${item.photo}`}
 //                           onError={(e) => e.target.src = "https://placehold.co/70"}
 //                           alt={item.title}
 //                         />
@@ -218,7 +218,7 @@
 //                   <td>
 //                     <div className="product-col">
 //                       <img
-//                         src={`http://localhost:8080/images/${giftItem.photo}`}
+//                         src={`${import.meta.env.VITE_API_BASE_URL}/images/${giftItem.photo}`}
 //                         onError={(e) => e.target.src = "https://placehold.co/70"}
 //                         alt={giftItem.title}
 //                       />
@@ -518,7 +518,7 @@ export default function CartPage() {
                     <td>
                       <div className="product-col">
                         <img
-                          src={`http://localhost:8080/images/${item.photo}`}
+                          src={`${import.meta.env.VITE_API_BASE_URL}/images/${item.photo}`}
                           onError={(e) => e.target.src = "https://placehold.co/70"}
                           alt={item.title}
                         />
@@ -549,7 +549,7 @@ export default function CartPage() {
                   <td>
                     <div className="product-col">
                       <img
-                        src={`http://localhost:8080/images/${giftItem.photo}`}
+                        src={`${import.meta.env.VITE_API_BASE_URL}/images/${giftItem.photo}`}
                         onError={(e) => e.target.src = "https://placehold.co/70"}
                         alt={giftItem.title}
                       />

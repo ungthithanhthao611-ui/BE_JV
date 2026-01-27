@@ -231,7 +231,7 @@ export default function SearchPage() {
                 >
                   <div style={styles.imgWrap}>
                     <img
-                      src={`http://localhost:8080/images/${p.photo || p.image || ""}`}
+                      src={`${import.meta.env.VITE_API_BASE_URL}/images/${p.photo || p.image || ""}`}
                       alt={p.title || p.name}
                       style={styles.img}
                       onError={(e) => {

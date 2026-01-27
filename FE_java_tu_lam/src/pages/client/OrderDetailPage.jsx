@@ -754,7 +754,7 @@ const OrderDetailPage = () => {
                     <div key={index} className="product-item">
                       <div className="product-image">
                         <img
-                          src={`http://localhost:8080/images/${item.productPhoto}`}
+                          src={`${import.meta.env.VITE_API_BASE_URL}/images/${item.productPhoto}`}
                           alt={item.productName}
                           onError={fallbackImage}
                         />

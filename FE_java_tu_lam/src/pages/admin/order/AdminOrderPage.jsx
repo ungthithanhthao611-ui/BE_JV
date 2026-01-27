@@ -105,7 +105,7 @@ const AdminOrderPage = () => {
     setSelectedOrder(order);
     setShowModal(true);
     // Gọi API lấy items
-    axios.get(`http://localhost:8080/api/orders/${order.orderId}/items`)
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${order.orderId}/items`)
       .then(res => setOrderItems(res.data))
       .catch(err => console.error(err));
   };
@@ -256,7 +256,7 @@ const AdminOrderPage = () => {
                 {orderItems.map((item, idx) => (
                   <div key={idx} style={styles.itemRow}>
                     <img
-                      src={`http://localhost:8080/images/${item.productPhoto}`}
+                      src={`${import.meta.env.VITE_API_BASE_URL}/images/${item.productPhoto}`}
                       alt={item.productName}
                       style={{ width: 50, height: 50, objectFit: "cover", borderRadius: 4 }}
                     />

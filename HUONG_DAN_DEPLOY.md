@@ -37,15 +37,22 @@ Mình đã tạo file `Dockerfile` và cập nhật `application.properties` đ�
    - Sau khi xong, bạn sẽ có một link ví dụ: `https://my-backend.onrender.com`.
 
 ## 3. Deploy Frontend (React/Vite)
-1. Đăng ký tài khoản [Vercel](https://vercel.com).
-2. Bấm **Add New Project**.
-3. Chọn repo GitHub của bạn.
-4. **Build & Config Settings**:
-   - Framework Preset: **Vite**.
-   - Root Directory: chọn `FE_java_tu_lam` (bấm Edit để chọn đúng thư mục).
-5. **Environment Variables**:
-   - Thêm biến `VITE_API_BASE_URL` với giá trị là link Backend vừa có ở bước 2 (VD: `https://my-backend.onrender.com`). **Lưu ý: Không có dấu / ở cuối**.
-6. Bấm **Deploy**.
+
+## 3. Deploy Frontend (React/Vite) - Khuyên dùng Render (vì Netlify/Vercel đang bị lỗi)
+
+Do tài khoản Netlify của bạn bị tạm khóa, cách tốt nhất là deploy Frontend ngay trên **Render** (cùng chỗ với Backend).
+
+1. Trên Dashboard của [Render](https://dashboard.render.com/), bấm nút **New +** và chọn **Static Site**.
+2. Chọn repo GitHub `BE_JV` của bạn.
+3. Điền các thông tin sau:
+   - **Name**: `be-jv-frontend` (hoặc tên tùy thích).
+   - **Root Directory**: `FE_java_tu_lam` (Quan trọng).
+   - **Build Command**: `npm install && npm run build`
+   - **Publish Directory**: `dist`
+4. Kéo xuống phần **Environment Variables**, bấm **Add Environment Variable**:
+   - **Key**: `VITE_API_BASE_URL`
+   - **Value**: `https://be-jv.onrender.com` (Link Backend không có dấu `/` ở cuối).
+5. Bấm **Create Static Site**.
 
 ## Lưu ý quan trọng về Ảnh (Uploads)
 - Vì deploy miễn phí (Render/Railway), file ảnh bạn upload sẽ **mất đi khi server khởi động lại** (do server không có ổ cứng lưu trữ vĩnh viễn).

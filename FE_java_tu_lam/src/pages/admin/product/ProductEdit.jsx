@@ -189,7 +189,7 @@ export default function ProductEdit() {
               {form.photo && (
                 <div style={{ marginTop: 10, textAlign: "center", padding: 10, border: "1px dashed #ccc", borderRadius: 8 }}>
                   <img
-                    src={`http://localhost:8080/images/${form.photo}`}
+                    src={`${import.meta.env.VITE_API_BASE_URL}/images/${form.photo}`}
                     alt="Preview"
                     style={{ maxHeight: 150, maxWidth: "100%", objectFit: "contain" }}
                     onError={(e) => e.target.style.display = 'none'}

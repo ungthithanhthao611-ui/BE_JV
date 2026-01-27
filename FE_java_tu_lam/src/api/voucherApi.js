@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/api/vouchers";
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/vouchers`;
 
 export const getAllVouchers = () => axios.get(API_URL);
 export const createVoucher = (data) => axios.post(API_URL, data);

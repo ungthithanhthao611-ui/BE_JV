@@ -228,7 +228,7 @@ export default function CheckoutPage() {
         console.log(">>> Generated MoMo Order ID:", momoOrderId);
 
         // ✅ LƯU MOMO_ORDER_ID VÀO DATABASE
-        await fetch(`http://localhost:8080/api/orders/${dbOrderId}/momo-order-id`, {
+        await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${dbOrderId}/momo-order-id`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ momoOrderId })
@@ -323,7 +323,7 @@ export default function CheckoutPage() {
                   return (
                     <div className="order-item" key={item.productId}>
                       <img
-                        src={`http://localhost:8080/images/${item.photo}`}
+                        src={`${import.meta.env.VITE_API_BASE_URL}/images/${item.photo}`}
                         alt={item.title}
                         className="order-img"
                         onError={(e) => (e.target.src = "https://placehold.co/60")}
@@ -342,7 +342,7 @@ export default function CheckoutPage() {
                   <div className="order-item gift-item">
                     {/* Hiển thị ảnh quà tặng từ link online */}
                     <img
-                      src={`http://localhost:8080/images/${giftItem.photo}`}
+                      src={`${import.meta.env.VITE_API_BASE_URL}/images/${giftItem.photo}`}
                       alt={giftItem.title}
                       className="order-img"
                       onError={(e) => (e.target.src = "https://placehold.co/60")}

@@ -25,7 +25,7 @@ const UserManager = () => {
     const handleDelete = async (id) => {
         if (!window.confirm("CẢNH BÁO: Bạn có chắc chắn muốn xóa user này? Hành động này không thể hoàn tác!")) return;
         try {
-            await axios.delete(`http://localhost:8080/api/users/${id}`);
+            await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/users/${id}`);
             alert("Đã xóa user!");
             setUsers(users.filter((u) => u.id !== id));
         } catch (err) {

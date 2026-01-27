@@ -1,6 +1,6 @@
 // // import axios from "axios";
 
-// // const API_URL = "http://localhost:8080/api/products";
+// // const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/products`;
 
 // // // --- SỬA HÀM NÀY ---
 // // // Hàm này giờ nhận thêm categoryId
@@ -31,7 +31,7 @@
 // // ===============================
 // // BASE URL BACKEND
 // // ===============================
-// const API_URL = "http://localhost:8080/api/products";
+// const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/products`;
 
 // // ===============================
 // // GET: DANH SÁCH SẢN PHẨM
@@ -103,7 +103,7 @@
 
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/products";
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/products`;
 
 export const getAllProducts = (categoryId) => {
   const params = categoryId ? { categoryId } : {};

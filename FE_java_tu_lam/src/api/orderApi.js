@@ -7,7 +7,7 @@
 import axios from "axios";
 
 // Định nghĩa URL gốc cho Order
-const API_URL = "http://localhost:8080/api/orders";
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/orders`;
 
 // 1. Tạo đơn hàng (Checkout)
 export const checkout = (data) => {

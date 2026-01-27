@@ -162,7 +162,7 @@ const OrderHistoryPage = () => {
     try {
       setCancellingOrder(true);
 
-      await fetch(`http://localhost:8080/api/orders/${selectedOrderId}/status?status=CANCELLED`, {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${selectedOrderId}/status?status=CANCELLED`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' }
       });

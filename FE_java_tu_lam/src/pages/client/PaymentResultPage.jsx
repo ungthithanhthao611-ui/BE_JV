@@ -26,7 +26,7 @@ const PaymentResultPage = () => {
         if (orderId && resultCode) {
             console.log(">>> 📦 Payment return:", { orderId, resultCode, transId });
 
-            fetch(`http://localhost:8080/api/payment/momo-return?orderId=${orderId}&resultCode=${resultCode}&transId=${transId || ''}&message=${message || ''}`)
+            fetch(`${import.meta.env.VITE_API_BASE_URL}/api/payment/momo-return?orderId=${orderId}&resultCode=${resultCode}&transId=${transId || ''}&message=${message || ''}`)
                 .then(res => res.json())
                 .then(data => {
                     console.log(">>> Payment return processed:", data);
@@ -36,7 +36,7 @@ const PaymentResultPage = () => {
                         console.log(">>> ✅ Payment SUCCESS! Finding order...");
 
                         // ✅ TÌM ORDER QUA MOMO_ORDER_ID
-                        fetch(`http://localhost:8080/api/orders/find-by-momo?momoOrderId=${orderId}`)
+                        fetch(`${import.meta.env.VITE_API_BASE_URL}/api/orders/find-by-momo?momoOrderId=${orderId}`)
                             .then(res => {
                                 if (!res.ok) {
                                     throw new Error(`Cannot find order: ${res.status}`);
@@ -50,7 +50,7 @@ const PaymentResultPage = () => {
                                 console.log(`>>> Updating order #${dbOrderId} to CONFIRMED...`);
 
                                 // Gọi API update status
-                                return fetch(`http://localhost:8080/api/orders/${dbOrderId}/status?status=CONFIRMED`, {
+                                return fetch(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${dbOrderId}/status?status=CONFIRMED`, {
                                     method: 'PUT'
                                 });
                             })

@@ -121,7 +121,7 @@ export default function ProductDelete() {
 
           <div style={productBox}>
             <img
-              src={`http://localhost:8080/images/${currentProduct.photo}`}
+              src={`${import.meta.env.VITE_API_BASE_URL}/images/${currentProduct.photo}`}
               alt={currentProduct.title}
               style={image}
             />
@@ -168,7 +168,7 @@ export default function ProductDelete() {
                 <td>{p.title}</td>
                 <td>
                   <img
-                    src={`http://localhost:8080/images/${p.photo}`}
+                    src={`${import.meta.env.VITE_API_BASE_URL}/images/${p.photo}`}
                     alt={p.title}
                     width={50}
                   />

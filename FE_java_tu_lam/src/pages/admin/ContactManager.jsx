@@ -25,7 +25,7 @@ const ContactManager = () => {
     const handleDelete = async (id) => {
         if (!window.confirm("Bạn có chắc chắn muốn xóa liên hệ này?")) return;
         try {
-            await axios.delete(`http://localhost:8080/api/contact/${id}`);
+            await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/contact/${id}`);
             alert("Đã xóa liên hệ!");
             setContacts(contacts.filter((c) => c.id !== id));
         } catch (err) {
@@ -37,7 +37,7 @@ const ContactManager = () => {
     const handleToggleStatus = async (contact) => {
         const newStatus = contact.status === 1 ? 2 : 1; // 1: Mới, 2: Đã xử lý
         try {
-            await axios.put(`http://localhost:8080/api/contact/${contact.id}/status?status=${newStatus}`);
+            await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/contact/${contact.id}/status?status=${newStatus}`);
             // Update local state
             setContacts(contacts.map(c => c.id === contact.id ? { ...c, status: newStatus } : c));
         } catch (err) {
