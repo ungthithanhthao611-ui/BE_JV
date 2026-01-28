@@ -323,7 +323,7 @@ export default function CheckoutPage() {
                   return (
                     <div className="order-item" key={item.productId}>
                       <img
-                        src={`${import.meta.env.VITE_API_BASE_URL}/images/${item.photo}`}
+                        src={item.photo?.startsWith("http") ? item.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${item.photo}`}
                         alt={item.title}
                         className="order-img"
                         onError={(e) => (e.target.src = "https://placehold.co/60")}
@@ -342,7 +342,7 @@ export default function CheckoutPage() {
                   <div className="order-item gift-item">
                     {/* Hiển thị ảnh quà tặng từ link online */}
                     <img
-                      src={`${import.meta.env.VITE_API_BASE_URL}/images/${giftItem.photo}`}
+                      src={giftItem.photo?.startsWith("http") ? giftItem.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${giftItem.photo}`}
                       alt={giftItem.title}
                       className="order-img"
                       onError={(e) => (e.target.src = "https://placehold.co/60")}

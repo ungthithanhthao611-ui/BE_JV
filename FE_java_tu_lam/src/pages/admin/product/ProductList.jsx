@@ -70,7 +70,7 @@ export default function ProductList() {
 
                       <td style={{ textAlign: "center" }}>
                         <img
-                          src={`${import.meta.env.VITE_API_BASE_URL}/images/${p.photo}`}
+                          src={p.photo?.startsWith("http") ? p.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${p.photo}`}
                           alt={p.title}
                           style={styles.image}
                           onError={(e) => e.target.src = "https://via.placeholder.com/50?text=NoImage"}

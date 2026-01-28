@@ -135,6 +135,18 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @org.springframework.beans.factory.annotation.Value("${app.storage.type}")
+    private String storageType;
+
+    @org.springframework.beans.factory.annotation.Value("${cloudinary.cloud-name}")
+    private String cloudName;
+
+    @org.springframework.beans.factory.annotation.Value("${cloudinary.api-key}")
+    private String apiKey;
+
+    @org.springframework.beans.factory.annotation.Value("${cloudinary.api-secret}")
+    private String apiSecret;
+
     @Override
     public void create(Product p, MultipartFile image) throws IOException {
         String fileName = saveImage(image);
@@ -144,14 +156,35 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String saveImage(MultipartFile image) throws IOException {
-        if (image != null && !image.isEmpty()) {
-            String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
-            try (InputStream is = image.getInputStream()) {
-                Files.copy(is, uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-            }
-            return fileName;
+        if (image == null || image.isEmpty()) {
+            return null;
         }
-        return null;
+
+        // 1. CLOUD STORAGE (Render)
+        if ("cloud".equalsIgnoreCase(storageType)) {
+            try {
+                com.cloudinary.Cloudinary cloudinary = new com.cloudinary.Cloudinary(
+                        com.cloudinary.utils.ObjectUtils.asMap(
+                                "cloud_name", cloudName,
+                                "api_key", apiKey,
+                                "api_secret", apiSecret));
+
+                java.util.Map uploadResult = cloudinary.uploader().upload(image.getBytes(),
+                        com.cloudinary.utils.ObjectUtils.asMap("resource_type", "auto"));
+
+                return (String) uploadResult.get("secure_url"); // Trả về Full URL (https://...)
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new IOException("Upload to Cloudinary failed: " + e.getMessage());
+            }
+        }
+
+        // 2. LOCAL STORAGE (XAMPP / Localhost)
+        String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+        try (InputStream is = image.getInputStream()) {
+            Files.copy(is, uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+        }
+        return fileName; // Trả về tên file (frontend sẽ tự ghép với base url)
     }
 
     @Override

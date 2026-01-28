@@ -518,7 +518,7 @@ export default function CartPage() {
                     <td>
                       <div className="product-col">
                         <img
-                          src={`${import.meta.env.VITE_API_BASE_URL}/images/${item.photo}`}
+                          src={item.photo?.startsWith("http") ? item.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${item.photo}`}
                           onError={(e) => e.target.src = "https://placehold.co/70"}
                           alt={item.title}
                         />
@@ -549,7 +549,7 @@ export default function CartPage() {
                   <td>
                     <div className="product-col">
                       <img
-                        src={`${import.meta.env.VITE_API_BASE_URL}/images/${giftItem.photo}`}
+                        src={giftItem.photo?.startsWith("http") ? giftItem.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${giftItem.photo}`}
                         onError={(e) => e.target.src = "https://placehold.co/70"}
                         alt={giftItem.title}
                       />
