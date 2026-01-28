@@ -125,111 +125,86 @@ const Header = () => {
 
   const closeSearch = () => setSearchOpen(false);
 
+  // MOBILE RESPONSIVE
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 850);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 850);
+      if (window.innerWidth >= 850) setMobileMenuOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+
   return (
     <>
       <header style={styles.header}>
         <div style={styles.container}>
+          {/* HAMBURGER (LEFT on Mobile) */}
+          {isMobile && (
+            <button style={styles.hamburgerBtn} onClick={toggleMobileMenu}>
+              {mobileMenuOpen ? "✕" : "☰"}
+            </button>
+          )}
+
           {/* LOGO */}
           <div style={styles.logo} onClick={() => navigate("/")}>
             ☕ Coffee
           </div>
 
-          {/* MENU */}
-          <nav style={styles.menu}>
-            <Link style={styles.menuLink} to="/">
-              Trang chủ
-            </Link>
-            <Link style={styles.menuLink} to="/san-pham">
-              Sản phẩm
-            </Link>
-            <Link style={styles.menuLink} to="/tin-tuc">
-              Tin tức
-            </Link>
-            <Link style={styles.menuLink} to="/contact">
-              Liên hệ
-            </Link>
-          </nav>
+          {/* DESKTOP MENU */}
+          {!isMobile && (
+            <nav style={styles.menu}>
+              <Link style={styles.menuLink} to="/">Trang chủ</Link>
+              <Link style={styles.menuLink} to="/san-pham">Sản phẩm</Link>
+              <Link style={styles.menuLink} to="/tin-tuc">Tin tức</Link>
+              <Link style={styles.menuLink} to="/contact">Liên hệ</Link>
+            </nav>
+          )}
 
           {/* ICONS */}
           <div style={styles.icons}>
-            {/* 🔍 SEARCH -> OPEN MODAL */}
-            <button
-              type="button"
-              style={styles.iconBtn}
-              title="Tìm kiếm"
-              onClick={openSearchModal}
-            >
+            {/* SEARCH */}
+            <button type="button" style={styles.iconBtn} onClick={openSearchModal}>
               🔍
             </button>
 
-            {/* USER */}
+            {/* USER -> Hide Name on Mobile to save space */}
             <div style={styles.userWrap} ref={dropdownRef}>
               <div style={styles.userBox}>
-                <button
-                  type="button"
-                  style={styles.userBtn}
-                  title={token ? "Trang cá nhân" : "Tài khoản"}
-                  onClick={handleUserIconClick}
-                >
+                <button type="button" style={styles.userBtn} onClick={handleUserIconClick}>
                   👤
-                  {user?.fullName ? (
-                    <div style={styles.username}>{user.fullName}</div>
-                  ) : (
-                    <div style={styles.usernameMuted}>
-                      {token ? "Tài khoản" : "Đăng nhập"}
-                    </div>
+                  {/* Chỉ hiện tên user trên Desktop */}
+                  {!isMobile && (
+                    user?.fullName ? (
+                      <div style={styles.username}>{user.fullName}</div>
+                    ) : (
+                      <div style={styles.usernameMuted}>{token ? "Tài khoản" : "Đăng nhập"}</div>
+                    )
                   )}
                 </button>
-
-                {token && (
-                  <button
-                    type="button"
-                    style={styles.caretBtn}
-                    onClick={handleCaretClick}
-                    title="Mở menu"
-                  >
-                    ▾
-                  </button>
+                {/* Desktop Caret */}
+                {!isMobile && token && (
+                  <button type="button" style={styles.caretBtn} onClick={handleCaretClick}>▾</button>
                 )}
               </div>
 
+              {/* DROPDOWN (Desktop only or shared?) -> Shared login logic */}
               {open && (
                 <div style={styles.dropdown}>
                   {!token ? (
                     <>
-                      <div
-                        style={styles.dropdownItem}
-                        onClick={() => {
-                          setOpen(false);
-                          navigate("/login");
-                        }}
-                      >
-                        👤 Đăng nhập
-                      </div>
-                      <div
-                        style={styles.dropdownItem}
-                        onClick={() => {
-                          setOpen(false);
-                          navigate("/register");
-                        }}
-                      >
-                        ✍️ Đăng ký
-                      </div>
+                      <div style={styles.dropdownItem} onClick={() => { setOpen(false); navigate("/login"); }}>👤 Đăng nhập</div>
+                      <div style={styles.dropdownItem} onClick={() => { setOpen(false); navigate("/register"); }}>✍️ Đăng ký</div>
                     </>
                   ) : (
                     <>
-                      <div
-                        style={styles.dropdownItem}
-                        onClick={() => {
-                          setOpen(false);
-                          navigate("/profile");
-                        }}
-                      >
-                        👤 Trang cá nhân
-                      </div>
-                      <div style={styles.dropdownItem} onClick={handleLogout}>
-                        🚪 Đăng xuất
-                      </div>
+                      <div style={styles.dropdownItem} onClick={() => { setOpen(false); navigate("/profile"); }}>👤 Trang cá nhân</div>
+                      <div style={styles.dropdownItem} onClick={handleLogout}>🚪 Đăng xuất</div>
                     </>
                   )}
                 </div>
@@ -237,12 +212,36 @@ const Header = () => {
             </div>
 
             {/* CART */}
-            <Link to="/cart" style={styles.cart} title="Giỏ hàng">
+            <Link to="/cart" style={styles.cart}>
               🛒<span style={styles.badge}>{cartCount}</span>
             </Link>
           </div>
         </div>
       </header>
+
+      {/* MOBILE MENU OVERLAY */}
+      {isMobile && mobileMenuOpen && (
+        <div style={styles.mobileMenuContainer}>
+          <Link style={styles.mobileMenuItem} to="/" onClick={toggleMobileMenu}>Trang chủ</Link>
+          <Link style={styles.mobileMenuItem} to="/san-pham" onClick={toggleMobileMenu}>Sản phẩm</Link>
+          <Link style={styles.mobileMenuItem} to="/tin-tuc" onClick={toggleMobileMenu}>Tin tức</Link>
+          <Link style={styles.mobileMenuItem} to="/contact" onClick={toggleMobileMenu}>Liên hệ</Link>
+          <div style={styles.mobileMenuDivider}></div>
+          {!token ? (
+            <>
+              <div style={styles.mobileMenuItem} onClick={() => { toggleMobileMenu(); navigate("/login"); }}>👤 Đăng nhập</div>
+              <div style={styles.mobileMenuItem} onClick={() => { toggleMobileMenu(); navigate("/register"); }}>✍️ Đăng ký</div>
+            </>
+          ) : (
+            <>
+              <div style={styles.mobileMenuItem} onClick={() => { toggleMobileMenu(); navigate("/profile"); }}>👤 {user?.fullName || "Tôi"}</div>
+              <div style={styles.mobileMenuItem} onClick={() => { toggleMobileMenu(); handleLogout(); }}>🚪 Đăng xuất</div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* ======= SEARCH MODAL ======= */}
 
       {/* ======= SEARCH MODAL ======= */}
       {searchOpen && (
@@ -525,4 +524,42 @@ const styles = {
     fontSize: 13,
     fontWeight: 600,
   },
+
+  /* MOBILE RESPONSIVE STYLES */
+  hamburgerBtn: {
+    background: "none",
+    border: "none",
+    fontSize: 24,
+    cursor: "pointer",
+    padding: 0,
+    marginRight: 10,
+  },
+  mobileMenuContainer: {
+    position: "fixed",
+    top: 60, // Height of header approx
+    left: 0,
+    right: 0,
+    background: "#fff",
+    borderBottom: "1px solid #eee",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+    zIndex: 40,
+    display: "flex",
+    flexDirection: "column",
+    padding: "10px 0",
+    animation: "slideDown 0.3s ease",
+  },
+  mobileMenuItem: {
+    padding: "12px 20px",
+    textDecoration: "none",
+    color: "#333",
+    fontWeight: 600,
+    fontSize: 16,
+    borderBottom: "1px solid #f9f9f9",
+  },
+  mobileMenuDivider: {
+    height: 4,
+    background: "#f5f5f5",
+    margin: "4px 0",
+  },
 };
+
