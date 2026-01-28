@@ -17,7 +17,7 @@ export default function ProductEdit() {
     // Load categories để select (nếu cần sau này, hiện tại để input text hoặc select tạm)
     // Tạm thời chưa có API getCategories ở đây nên mình cứ để giả định hoặc bỏ qua
     // Nhưng tốt nhất nên load categories thực
-    axios.get("http://localhost:8080/api/categories").then(res => setCategories(res.data)).catch(err => console.log(err));
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/categories`).then(res => setCategories(res.data)).catch(err => console.log(err));
 
   }, [id]);
 
@@ -167,7 +167,7 @@ export default function ProductEdit() {
 
                     try {
                       // Gọi API upload
-                      const res = await axios.post("http://localhost:8080/api/products/upload", formData, {
+                      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/products/upload`, formData, {
                         headers: {
                           "Content-Type": "multipart/form-data",
                         },

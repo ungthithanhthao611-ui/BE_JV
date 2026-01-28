@@ -13,7 +13,7 @@ const ContactManager = () => {
 
     const fetchContacts = async () => {
         try {
-            const res = await axios.get("http://localhost:8080/api/contact");
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/contact`);
             setContacts(res.data);
             setLoading(false);
         } catch (err) {

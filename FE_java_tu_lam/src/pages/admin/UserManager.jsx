@@ -13,7 +13,7 @@ const UserManager = () => {
 
     const fetchUsers = async () => {
         try {
-            const res = await axios.get("http://localhost:8080/api/users");
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/users`);
             setUsers(res.data);
             setLoading(false);
         } catch (err) {

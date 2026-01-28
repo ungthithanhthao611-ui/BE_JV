@@ -15,7 +15,7 @@ const AdminPage = () => {
 
   useEffect(() => {
     // 🔥 FLOW: Khi component mount, gọi API lấy thống kê từ Backend
-    axios.get("http://localhost:8080/api/dashboard/stats")
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/dashboard/stats`)
       .then(res => {
         if (res.data.error) {
           setError("❌ Server Error: " + res.data.error);
