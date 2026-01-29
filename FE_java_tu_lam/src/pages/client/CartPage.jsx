@@ -275,45 +275,67 @@ import Skeleton from "../../components/Skeleton";
 
 /* ================= CSS ================= */
 const cssStyles = `
-.page-wrapper { background:#f8f9fa; min-height:100vh; font-family:'Segoe UI',sans-serif; }
+.page-wrapper { background:#f9f9f9; min-height:100vh; font-family:'Segoe UI',sans-serif; }
 .container { max-width:1200px; margin:0 auto; padding:0 15px; }
-.cart-container { padding:30px 0 50px; }
-.page-title { font-size:24px; font-weight:600; border-bottom:2px solid #ddd; padding-bottom:10px; }
+.cart-container { padding:40px 0 80px; }
+.page-title { 
+  font-size:32px; font-weight:800; color:#333; margin-bottom:30px; 
+  text-transform:uppercase; border-bottom:3px solid #d32f2f; 
+  display:inline-block; padding-bottom:10px;
+}
 
-.cart-content { background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,.05); }
-.cart-table { width:100%; border-collapse:collapse; min-width:700px; }
-.cart-table th { background:#f1f1f1; padding:15px; border-bottom:2px solid #ddd; text-align:left; }
-.cart-table td { padding:15px; border-bottom:1px solid #eee; vertical-align:middle; }
+.cart-content { background:#fff; border-radius:15px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.05); }
+.cart-table { width:100%; border-collapse:collapse; }
+.cart-table th { background:#f8f8f8; padding:18px; color:#666; font-size:14px; text-transform:uppercase; letter-spacing:1px; text-align:left; border-bottom:1px solid #eee; }
+.cart-table td { padding:20px; border-bottom:1px solid #f5f5f5; vertical-align:middle; }
 
-.product-col { display:flex; align-items:center; gap:15px; }
-.product-col img { width:70px; height:70px; object-fit:cover; border-radius:6px; border:1px solid #eee; }
-.p-name { font-weight:500; color:#333; }
+.product-col { display:flex; align-items:center; gap:20px; }
+.product-col img { width:80px; height:80px; object-fit:cover; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+.p-info { display:flex; flex-direction:column; gap:5px; }
+.p-name { font-weight:700; color:#333; font-size:16px; }
 
-.total-col { color:#d32f2f; font-weight:bold; }
+.total-col { color:#d32f2f; font-weight:800; font-size:16px; }
 
 /* Nút tăng giảm số lượng */
-.qty-control { display:flex; align-items:center; border:1px solid #ddd; border-radius:4px; width:fit-content; }
-.qty-control button { width:30px; height:30px; background:#f9f9f9; border:none; cursor:pointer; font-weight:bold; transition:0.2s; }
-.qty-control button:hover { background:#e0e0e0; }
-.qty-control input { width:40px; height:30px; border:none; border-left:1px solid #ddd; border-right:1px solid #ddd; text-align:center; outline:none; font-weight:600; }
+.qty-control { display:flex; align-items:center; background:#f5f5f5; border-radius:30px; padding:5px; width:fit-content; }
+.qty-control button { 
+  width:32px; height:32px; background:white; border:none; border-radius:50%; 
+  cursor:pointer; font-weight:bold; transition:0.3s; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 2px 5px rgba(0,0,0,0.05);
+}
+.qty-control button:hover { background:#d32f2f; color:white; }
+.qty-control input { width:40px; border:none; background:transparent; text-align:center; outline:none; font-weight:700; font-size:15px; }
 
-.btn-remove { border:1px solid #ff4d4f; color:#ff4d4f; background:#fff; padding:5px 12px; border-radius:4px; cursor:pointer; transition:0.2s; }
-.btn-remove:hover { background:#ff4d4f; color:#fff; }
+.btn-remove { 
+  background:transparent; border:none; color:#ff4d4f; font-weight:600; cursor:pointer; 
+  transition:0.3s; padding:8px 15px; border-radius:20px;
+}
+.btn-remove:hover { background:#fff1f0; }
 
 /* GIFT */
-.gift-row { background:#fffbfb; border-left:4px solid #d32f2f; }
-.gift-tag { border:1px solid #d32f2f; color:#d32f2f; font-size:11px; padding:2px 6px; margin-right:6px; font-weight:bold; }
-.gift-note { font-size:12px; color:#888; font-style:italic; margin-top:4px; }
+.gift-row { background:#fff9f9; }
+.gift-tag { background:#d32f2f; color:white; font-size:10px; padding:3px 8px; border-radius:4px; font-weight:800; text-transform:uppercase; margin-bottom:5px; display:inline-block; }
+.gift-note { font-size:12px; color:#888; font-style:italic; }
 
-.cart-footer { margin-top:30px; display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; }
-.right-summary { background:#fff; padding:25px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,.05); max-width:350px; width:100%; }
-.summary-row { display:flex; justify-content:space-between; margin-bottom:12px; }
-.summary-row.total { border-top:1px solid #eee; padding-top:12px; font-weight:bold; }
-.final-price { color:#d32f2f; font-size:22px; }
+.cart-footer { margin-top:40px; display:flex; justify-content:space-between; align-items:flex-start; gap:30px; }
+.btn-back { display:flex; align-items:center; gap:8px; color:#666; font-weight:600; text-decoration:none; transition:0.3s; }
+.btn-back:hover { color:#d32f2f; transform:translateX(-5px); }
 
-.btn-checkout { width:100%; background:#d32f2f; color:#fff; border:none; padding:15px; border-radius:6px; font-weight:bold; cursor:pointer; text-transform:uppercase; transition:0.3s; }
-.btn-checkout:hover { background:#b71c1c; transform:translateY(-2px); box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4); }
-.btn-checkout:active { transform: scale(0.98); }
+.right-summary { 
+  background:#fff; padding:30px; border-radius:15px; 
+  box-shadow:0 15px 40px rgba(0,0,0,0.08); width:100%; max-width:400px;
+}
+.summary-row { display:flex; justify-content:space-between; margin-bottom:15px; font-size:15px; color:#666; }
+.summary-row.total { border-top:2px dashed #eee; padding-top:20px; margin-top:10px; font-weight:800; color:#333; font-size:18px; }
+.final-price { color:#d32f2f; font-size:26px; }
+
+.btn-checkout { 
+  width:100%; background:#333; color:#fff; border:none; padding:18px; border-radius:30px; 
+  font-weight:800; cursor:pointer; text-transform:uppercase; letter-spacing:1px; 
+  transition:0.3s cubic-bezier(0.4, 0, 0.2, 1); margin-top:20px;
+}
+.btn-checkout:hover { background:#d32f2f; transform:translateY(-5px); box-shadow: 0 10px 20px rgba(211, 47, 47, 0.3); }
+.btn-checkout:active { transform: scale(0.95); }
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -327,18 +349,26 @@ const cssStyles = `
 
 .fade-in-page { animation: fadeIn 0.6s ease-out; }
 .stagger-row { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; }
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .cart-table thead { display: none; }
+  .cart-table, .cart-table tbody, .cart-table tr, .cart-table td { display: block; width: 100%; }
+  .cart-table tr { padding: 20px; border-bottom: 5px solid #f9f9f9; position: relative; }
+  .cart-table td { border: none; padding: 10px 0; display: flex; justify-content: space-between; align-items: center; }
+  .cart-table td:before { content: attr(data-label); font-weight: 700; color: #888; text-transform: uppercase; font-size: 11px; }
+  
+  .product-col { flex-direction: row; gap: 15px; width: 100%; justify-content: flex-start; }
+  .cart-table td.product-td:before { display: none; }
+  .cart-table td.product-td { display: block; }
+  
+  .cart-footer { flex-direction: column-reverse; align-items: center; }
+  .right-summary { max-width: 100%; }
+  .page-title { font-size: 24px; text-align: center; display: block; }
+}
 `;
 
-const FALLBACK = "https://res.cloudinary.com/dpetnxe5v/image/upload/v1/coffee/no-image.png";
-const CLOUD_NAME = "dpetnxe5v";
-const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
-
-const getImg = (photo) => {
-  if (!photo) return FALLBACK;
-  if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
-  // photo chỉ là tên file -> ghép thành URL Cloudinary
-  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
-};
+import { getImg, FALLBACK } from "../../utils/imageUtils";
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -507,7 +537,7 @@ export default function CartPage() {
       <Header />
 
       <div className="container cart-container">
-        <h2 className="page-title">🛒 Giỏ Hàng Của Bạn</h2>
+        <h2 className="page-title">🛒 Giỏ Hàng</h2>
 
         <div className="cart-content">
           <table className="cart-table">
@@ -526,18 +556,21 @@ export default function CartPage() {
                 const price = item.price - (item.discount || 0);
                 return (
                   <tr key={item.productId} className="stagger-row" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <td>
+                    <td className="product-td">
                       <div className="product-col">
                         <img
                           src={getImg(item.photo)}
                           onError={(e) => e.target.src = FALLBACK}
                           alt={item.title}
                         />
-                        <div className="p-name">{item.title}</div>
+                        <div className="p-info">
+                          <div className="p-name">{item.title}</div>
+                          {item.size && <div style={{ fontSize: 12, color: '#888' }}>Size: {item.size}</div>}
+                        </div>
                       </div>
                     </td>
-                    <td>{price.toLocaleString()} đ</td>
-                    <td>
+                    <td data-label="Đơn giá">{price.toLocaleString()} đ</td>
+                    <td data-label="Số lượng">
                       {/* 🔥 NÚT ĐIỀU CHỈNH SỐ LƯỢNG */}
                       <div className="qty-control">
                         <button onClick={() => handleQuantityChange(item.productId, item.quantity - 1)}>-</button>
@@ -545,10 +578,9 @@ export default function CartPage() {
                         <button onClick={() => handleQuantityChange(item.productId, item.quantity + 1)}>+</button>
                       </div>
                     </td>
-                    <td className="total-col">{(price * item.quantity).toLocaleString()} đ</td>
-                    <td>
-                      {/* Nút Xóa gọi API */}
-                      <button className="btn-remove" onClick={() => handleRemoveItem(item.productId)}>Xóa</button>
+                    <td data-label="Thành tiền" className="total-col">{(price * item.quantity).toLocaleString()} đ</td>
+                    <td style={{ textAlign: 'right' }}>
+                      <button className="btn-remove" onClick={() => handleRemoveItem(item.productId)}>Gỡ bỏ</button>
                     </td>
                   </tr>
                 );
@@ -556,8 +588,8 @@ export default function CartPage() {
 
               {/* ===== HIỂN THỊ QUÀ TẶNG (NẾU CÓ) ===== */}
               {giftItem && (
-                <tr className="gift-row">
-                  <td>
+                <tr className="gift-row stagger-row" style={{ animationDelay: '0.5s' }}>
+                  <td className="product-td">
                     <div className="product-col">
                       <img
                         src={getImg(giftItem.photo)}
@@ -565,17 +597,17 @@ export default function CartPage() {
                         alt={giftItem.title}
                       />
                       <div>
-                        <span className="gift-tag">MUA KÈM 0đ</span>
-                        <b>{giftItem.title}</b>
+                        <span className="gift-tag">Món quà tặng</span>
+                        <div className="p-name">{giftItem.title}</div>
                         <div className="gift-note">
-                          [Quà tặng Noel - Số lượng: {giftItem.quantity}]
+                          [Số lượng miễn phí: {giftItem.quantity}]
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td><s style={{ color: '#999' }}>50.000 đ</s> 0 đ</td>
-                  <td>{giftItem.quantity}</td>
-                  <td className="total-col">0 đ</td>
+                  <td data-label="Đơn giá"><s style={{ color: '#999' }}>50k</s> 0 đ</td>
+                  <td data-label="Số lượng">{giftItem.quantity}</td>
+                  <td data-label="Thành tiền" className="total-col">Miễn phí</td>
                   <td></td>
                 </tr>
               )}
@@ -584,19 +616,22 @@ export default function CartPage() {
         </div>
 
         <div className="cart-footer">
-          <Link to="/san-pham" style={{ color: '#555', textDecoration: 'none' }}>← Tiếp tục mua sắm</Link>
+          <Link to="/san-pham" className="btn-back">
+            <span>←</span> Tiếp tục mua thêm
+          </Link>
 
           <div className="right-summary">
+            <h3 style={{ marginTop: 0, marginBottom: 20, fontSize: 20 }}>Tóm tắt đơn hàng</h3>
             <div className="summary-row">
-              <span>Tạm tính:</span>
-              <span>{cart.totalPrice.toLocaleString()} đ</span>
+              <span>Tạm tính ({cart.items.length} món):</span>
+              <span style={{ fontWeight: 700 }}>{cart.totalPrice.toLocaleString()} đ</span>
             </div>
             <div className="summary-row total">
               <span>Tổng cộng:</span>
               <span className="final-price">{cart.totalPrice.toLocaleString()} đ</span>
             </div>
             <button className="btn-checkout" onClick={() => navigate("/checkout")}>
-              TIẾN HÀNH THANH TOÁN
+              Thanh toán ngay
             </button>
           </div>
         </div>

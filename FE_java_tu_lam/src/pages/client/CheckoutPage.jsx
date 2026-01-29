@@ -12,77 +12,91 @@ import { useNavigate, Link } from "react-router-dom";
 
 // --- CSS STYLES ---
 const cssStyles = `
-  .page-wrapper { font-family: 'Segoe UI', sans-serif; color: #333; background: #fff; }
+  .page-wrapper { font-family: 'Segoe UI', sans-serif; color: #333; background: #fdfdfd; padding-bottom: 80px; }
   .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
-  .page-header { display: flex; justify-content: space-between; align-items: center; margin: 20px 0 40px; }
-  .page-title { font-size: 32px; font-weight: 300; color: #333; margin: 0; }
-  .breadcrumb { font-size: 14px; color: #999; }
-  .breadcrumb a { color: #333; text-decoration: none; }
+  .page-header { margin: 40px 0; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+  .page-title { font-size: 36px; font-weight: 800; color: #333; margin: 0; text-transform: uppercase; }
+  .breadcrumb { font-size: 14px; color: #999; margin-top: 10px; }
+  .breadcrumb a { color: #8B4513; text-decoration: none; font-weight: 600; }
 
-  .checkout-layout { display: flex; gap: 40px; margin-bottom: 60px; }
-  .col-left { width: 60%; }
-  .col-right { width: 40%; }
+  .checkout-layout { display: flex; gap: 50px; align-items: flex-start; }
+  .col-left { flex: 1.5; }
+  .col-right { flex: 1; position: sticky; top: 100px; }
 
-  .section-title { font-size: 24px; font-weight: 400; margin-bottom: 25px; color: #333; }
-  .form-group { display: flex; align-items: center; margin-bottom: 20px; }
-  .form-label { width: 120px; font-weight: 500; font-size: 14px; color: #555; }
-  .form-input-wrap { flex: 1; }
-  .form-control { width: 100%; padding: 10px 15px; border: 1px solid #ddd; border-radius: 4px; outline: none; }
+  .card-box { background: #fff; border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px; }
+  .section-title { font-size: 22px; font-weight: 800; margin-bottom: 25px; color: #333; border-left: 5px solid #d32f2f; padding-left: 15px; }
+  
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-weight: 700; font-size: 14px; color: #555; margin-bottom: 8px; }
+  .form-control { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; outline: none; transition: 0.3s; font-family: inherit; }
+  .form-control:focus { border-color: #d32f2f; box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1); }
   textarea.form-control { min-height: 100px; resize: vertical; }
 
   /* Order Box */
-  .order-box { border: 2px solid #f0f0f0; padding: 25px; border-radius: 8px; background: #fafafa; }
-  .order-header { font-size: 18px; margin-bottom: 20px; color: #333; font-weight: 700; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-  .order-list { max-height: 400px; overflow-y: auto; margin-bottom: 20px; padding-right: 5px; }
-  .order-item { display: flex; gap: 15px; border-bottom: 1px dashed #eee; padding-bottom: 15px; margin-bottom: 15px; }
-  .order-img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid #eee; }
+  .order-list { max-height: 400px; overflow-y: auto; margin-bottom: 20px; padding-right: 10px; }
+  .order-item { display: flex; gap: 15px; border-bottom: 1px solid #f5f5f5; padding-bottom: 15px; margin-bottom: 15px; }
+  .order-img { width: 65px; height: 65px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
   .order-info { flex: 1; }
-  .order-name { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
-  .order-meta { font-size: 13px; color: #777; }
-  .order-price { font-weight: bold; fontSize: 14px; }
+  .order-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: #333; }
+  .order-meta { font-size: 13px; color: #888; margin-bottom: 4px; }
+  .order-price { font-weight: 800; color: #d32f2f; }
 
-  /* GIFT ITEM STYLE */
-  .gift-item { background: #fff5f5; border: 1px solid #ffcccc; padding: 10px; border-radius: 6px; }
-  .gift-tag { display: inline-block; border: 1px solid #d32f2f; color: #d32f2f; font-size: 10px; padding: 1px 4px; margin-right: 5px; border-radius: 2px; }
-  .gift-badge { font-size: 11px; color: #d32f2f; font-style: italic; }
+  /* GIFT ITEM */
+  .gift-item { background: #fff9f9; border: 1px solid #ffeded; }
+  .gift-tag { background: #d32f2f; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
 
   /* Voucher */
-  .voucher-section { margin: 20px 0; border: 1px solid #eee; background: #fff; border-radius: 6px; padding: 15px; }
-  .voucher-head { font-weight: bold; margin-bottom: 10px; display: flex; justify-content: space-between; font-size: 14px; }
-  .voucher-list { max-height: 200px; overflow-y: auto; display: flex; flexDirection: column; gap: 10px; }
-  .voucher-item { display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-  .voucher-item.selected { border-color: #20c997; background: #e6fffa; }
-  .voucher-item.disabled { opacity: 0.6; cursor: not-allowed; background: #f9f9f9; }
-  .v-code { font-weight: bold; color: #d32f2f; font-size: 13px; }
-  .v-desc { font-size: 12px; color: #555; }
+  .voucher-section { margin-top: 20px; }
+  .voucher-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+  .voucher-item { display: flex; align-items: center; gap: 12px; padding: 15px; border: 2px solid #eee; border-radius: 10px; cursor: pointer; transition: 0.3s; position: relative; }
+  .voucher-item:hover { border-color: #d32f2f; }
+  .voucher-item.selected { border-color: #d32f2f; background: #fff5f5; }
+  .voucher-item.disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+  .v-icon { font-size: 24px; }
+  .v-code { font-weight: 800; color: #d32f2f; font-size: 14px; }
+  .v-desc { font-size: 12px; color: #666; margin-top: 2px; }
 
-  /* Total */
-  .summary-row { display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 10px; color: #555; }
-  .summary-row.discount { color: #20c997; font-weight: 600; }
-  .order-total { display: flex; justify-content: space-between; font-size: 20px; font-weight: 800; margin-top: 20px; color: #d32f2f; border-top: 2px solid #ddd; padding-top: 15px; }
+  /* Prices */
+  .prices-box { border-top: 2px dashed #eee; padding-top: 20px; margin-top: 20px; }
+  .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 15px; color: #666; }
+  .summary-row.discount { color: #2ecc71; font-weight: 700; }
+  .order-total { display: flex; justify-content: space-between; font-size: 22px; font-weight: 900; color: #d32f2f; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
 
-  .payment-section { margin-top: 30px; }
-  .payment-option { margin-bottom: 15px; border: 1px solid #eee; padding: 15px; border-radius: 8px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: space-between; }
-  .payment-option:hover { border-color: #d32f2f; background: #fffdfd; }
+  /* Payment */
+  .payment-options { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+  .payment-option { 
+    display: flex; align-items: center; justify-content: space-between; padding: 18px; 
+    border: 2px solid #eee; border-radius: 12px; cursor: pointer; transition: 0.3s; 
+  }
+  .payment-option:hover { border-color: #d32f2f; }
   .payment-option.selected { border-color: #d32f2f; background: #fff5f5; }
-  
-  .payment-left { display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 15px; }
-  .payment-logo { height: 32px; object-fit: contain; }
+  .payment-left { display: flex; align-items: center; gap: 12px; font-weight: 700; }
+  .payment-logo { width: 30px; height: 30px; object-fit: contain; }
 
-  .btn-submit { width: 100%; padding: 14px; background: #355e7e; color: white; font-weight: bold; text-transform: uppercase; border: none; border-radius: 6px; cursor: pointer; margin-top: 20px; font-size: 15px; }
-  .btn-submit:hover { background: #2c4d68; }
+  .btn-submit { 
+    width: 100%; padding: 20px; background: #333; color: white; border: none; 
+    border-radius: 35px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+    cursor: pointer; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); margin-top: 30px;
+  }
+  .btn-submit:hover { background: #d32f2f; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(211, 47, 47, 0.3); }
+  .btn-submit:active { transform: scale(0.95); }
+
+  /* MOBILE RESPONSIVE */
+  @media (max-width: 992px) {
+    .checkout-layout { flex-direction: column; }
+    .col-left, .col-right { width: 100%; }
+    .col-right { position: static; }
+    .page-title { font-size: 28px; }
+  }
+
+  @media (max-width: 576px) {
+    .card-box { padding: 20px; }
+    .section-title { font-size: 18px; }
+    .payment-option { padding: 15px; font-size: 14px; }
+  }
 `;
 
-const FALLBACK = "https://res.cloudinary.com/dpetnxe5v/image/upload/v1/coffee/no-image.png";
-const CLOUD_NAME = "dpetnxe5v";
-const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
-
-const getImg = (photo) => {
-  if (!photo) return FALLBACK;
-  if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
-  // photo chỉ là tên file -> ghép thành URL Cloudinary
-  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
-};
+import { getImg, FALLBACK } from "../../utils/imageUtils";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -272,63 +286,92 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="page-wrapper">
+    <div className="page-wrapper fade-in-page">
       <style>{cssStyles}</style>
       <Header />
 
       <div className="container">
-        <div className="page-header">
+        <header className="page-header">
           <h1 className="page-title">Thanh Toán</h1>
-          <div className="breadcrumb"><Link to="/">Trang chủ</Link> / <span>Thanh toán</span></div>
-        </div>
+          <div className="breadcrumb">
+            <Link to="/">Trang chủ</Link> / <Link to="/cart">Giỏ hàng</Link> / <span>Xác nhận đơn hàng</span>
+          </div>
+        </header>
 
         <div className="checkout-layout">
-          {/* CỘT TRÁI: FORM */}
+          {/* CỘT TRÁI: THÔNG TIN GIAO HÀNG */}
           <div className="col-left">
-            <h2 className="section-title">Thông tin giao hàng</h2>
-            <div className="form-group">
-              <label className="form-label">Họ tên*</label>
-              <div className="form-input-wrap"><input className="form-control" value={name} onChange={e => setName(e.target.value)} /></div>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Email*</label>
-              <div className="form-input-wrap"><input className="form-control" value={email} onChange={e => setEmail(e.target.value)} /></div>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Điện thoại*</label>
-              <div className="form-input-wrap"><input className="form-control" value={phone} onChange={e => setPhone(e.target.value)} /></div>
-            </div>
+            <div className="card-box">
+              <h2 className="section-title">Thông tin giao hàng</h2>
 
-            {/* ✅ PHẦN ĐỊA CHỈ MỚI - CHỌN TỈNH/QUẬN/XÃ */}
-            <h3 style={{ fontSize: 18, fontWeight: 600, marginTop: 30, marginBottom: 15, color: '#333' }}>
-              📍 Địa chỉ giao hàng
-            </h3>
-            <AddressSelector
-              onAddressChange={(fullAddress, parts, isValid) => {
-                setAddress(fullAddress);
-                setIsAddressSupported(isValid);
-              }}
-              onSupportStatusChange={(isSupported) => {
-                if (!isSupported) {
-                  setAddress("");
-                  setIsAddressSupported(false);
-                }
-              }}
-            />
+              <div className="form-group">
+                <label className="form-label">Họ và tên người nhận</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Ví dụ: Nguyễn Văn A"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
 
-            <div className="form-group">
-              <label className="form-label">Ghi chú</label>
-              <div className="form-input-wrap"><textarea className="form-control" value={note} onChange={e => setNote(e.target.value)} placeholder="Ghi chú cho đơn hàng (VD: Giao giờ hành chính, gọi trước khi giao...)" /></div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+                <div className="form-group">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="example@gmail.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Số điện thoại</label>
+                  <input
+                    type="tel"
+                    className="form-control"
+                    placeholder="09xx xxx xxx"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginTop: '10px' }}>
+                <label className="form-label">Địa chỉ chi tiết</label>
+                <AddressSelector
+                  onAddressChange={(fullAddress, parts, isValid) => {
+                    setAddress(fullAddress);
+                    setIsAddressSupported(isValid);
+                  }}
+                  onSupportStatusChange={(isSupported) => {
+                    if (!isSupported) {
+                      setAddress("");
+                      setIsAddressSupported(false);
+                    }
+                  }}
+                />
+              </div>
+
+              <div className="form-group" style={{ marginTop: '20px' }}>
+                <label className="form-label">Ghi chú cho shipper</label>
+                <textarea
+                  className="form-control"
+                  placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao..."
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
+              </div>
             </div>
           </div>
 
           {/* CỘT PHẢI: ĐƠN HÀNG */}
           <div className="col-right">
-            <div className="order-box">
-              <h3 className="order-header">Đơn hàng ({cart.items.length + (giftItem ? 1 : 0)})</h3>
+            <div className="card-box" style={{ position: 'sticky', top: '20px' }}>
+              <h2 className="section-title" style={{ border: 'none', padding: 0, marginBottom: 20 }}>Đơn hàng của bạn</h2>
 
               <div className="order-list">
-                {/* 1. Danh sách sản phẩm trong giỏ */}
                 {cart.items.map((item) => {
                   const price = item.price - (item.discount || 0);
                   return (
@@ -341,120 +384,85 @@ export default function CheckoutPage() {
                       />
                       <div className="order-info">
                         <div className="order-name">{item.title}</div>
-                        <div className="order-meta">x{item.quantity}</div>
+                        <div className="order-meta">Số lượng: {item.quantity}</div>
+                        <div className="order-price">{(price * item.quantity).toLocaleString()} đ</div>
                       </div>
-                      <div className="order-price">{price.toLocaleString()}đ</div>
                     </div>
                   );
                 })}
 
-                {/* 2. Quà tặng (Nếu có) */}
                 {giftItem && (
                   <div className="order-item gift-item">
-                    {/* Hiển thị ảnh quà tặng từ link online */}
                     <img
                       src={getImg(giftItem.photo)}
                       alt={giftItem.title}
                       className="order-img"
                       onError={(e) => (e.target.src = FALLBACK)}
-                      style={{ borderColor: "#d32f2f" }}
+                      style={{ borderRadius: '50%' }}
                     />
-
                     <div className="order-info">
                       <div className="order-name" style={{ color: '#d32f2f' }}>
-                        <span className="gift-tag">MUA KÈM 0đ</span> {giftItem.title}
+                        <span className="gift-tag">Quà tặng</span> {giftItem.title}
                       </div>
-                      <div className="gift-badge">[Quà tặng Noel - Không bán]</div>
-                      <div className="order-meta">x{giftItem.quantity}</div>
+                      <div className="order-meta">Số lượng: {giftItem.quantity}</div>
+                      <div className="order-price">0 đ</div>
                     </div>
-                    <div className="order-price" style={{ color: '#d32f2f' }}>0đ</div>
                   </div>
                 )}
               </div>
 
-              {/* Voucher Selector */}
-              <div className="voucher-section">
-                <div className="voucher-head">
-                  <span>🎟️ Mã giảm giá</span>
-                  <span style={{ fontSize: 12, color: '#666' }}>{vouchers.length} mã có sẵn</span>
+              <div className="prices-box">
+                <div className="summary-row">
+                  <span>Tạm tính</span>
+                  <span>{cart.totalPrice.toLocaleString()} đ</span>
                 </div>
-                <div className="voucher-list">
+                {selectedVoucher && (
+                  <div className="summary-row discount">
+                    <span>Giảm giá (Voucher)</span>
+                    <span>- {discountAmount.toLocaleString()} đ</span>
+                  </div>
+                )}
+                <div className="summary-row">
+                  <span>Phí vận chuyển</span>
+                  <span style={{ color: '#2ecc71', fontWeight: 700 }}>Miễn phí</span>
+                </div>
+                <div className="order-total">
+                  <span>Tổng tiền</span>
+                  <span>{finalTotal.toLocaleString()} đ</span>
+                </div>
+              </div>
+
+              <div className="voucher-section">
+                <div style={{ fontWeight: 800, fontSize: 13, textTransform: 'uppercase', color: '#888', marginBottom: 10 }}>Ưu đãi dành cho bạn</div>
+                <div className="voucher-list" style={{ maxHeight: 200, overflowY: 'auto' }}>
                   {vouchers.map(v => {
                     const isEligible = cart.totalPrice >= v.minOrderAmount;
                     const isSelected = selectedVoucher?.id === v.id;
                     return (
-                      <div key={v.id} className={`voucher-item ${isSelected ? 'selected' : ''} ${!isEligible ? 'disabled' : ''}`} onClick={() => handleSelectVoucher(v)}>
-                        <div className="voucher-left">
+                      <div
+                        key={v.id}
+                        className={`voucher-item ${isSelected ? 'selected' : ''} ${!isEligible ? 'disabled' : ''}`}
+                        onClick={() => isEligible && handleSelectVoucher(v)}
+                      >
+                        <div style={{ flex: 1 }}>
                           <div className="v-code">{v.code}</div>
                           <div className="v-desc">Giảm {v.discount.toLocaleString()}đ</div>
-                          {!isEligible && <div className="v-reason">Đơn tối thiểu {v.minOrderAmount.toLocaleString()}đ</div>}
+                          {!isEligible && <div style={{ fontSize: 10, color: '#f5222d' }}>Thiếu {(v.minOrderAmount - cart.totalPrice).toLocaleString()}đ</div>}
                         </div>
-                        {isSelected && <span style={{ color: '#20c997', fontWeight: 'bold' }}>✔</span>}
+                        {isSelected && <span style={{ color: '#d32f2f' }}>✅</span>}
                       </div>
-                    );
+                    )
                   })}
                 </div>
               </div>
 
-              {/* Tổng tiền */}
-              <div className="summary-row"><span>Tạm tính:</span><span>{cart.totalPrice.toLocaleString()} đ</span></div>
-              {selectedVoucher && (
-                <div className="summary-row discount">
-                  <span>Voucher ({selectedVoucher.code}):</span>
-                  <span>-{discountAmount.toLocaleString()} đ</span>
-                </div>
-              )}
-              <div className="order-total"><span>Tổng cộng:</span><span>{finalTotal.toLocaleString()} đ</span></div>
-
-              {/* Thanh toán */}
-              <div className="payment-section">
-                <h4 className="payment-title">Phương thức thanh toán</h4>
-
-                {/* 1. COD */}
-                <div
-                  className={`payment-option ${paymentMethod === "COD" ? "selected" : ""}`}
-                  onClick={() => setPaymentMethod("COD")}
-                >
-                  <div className="payment-left">
-                    <input type="radio" checked={paymentMethod === "COD"} readOnly />
-                    <span>Thanh toán khi nhận hàng (COD)</span>
-                  </div>
-                  <img src="https://cdns.iconmonstr.com/wp-content/releases/preview/2018/240/iconmonstr-delivery-8.png" className="payment-logo" alt="COD" />
-                </div>
-
-                {/* 2. BANK */}
-                <div
-                  className={`payment-option ${paymentMethod === "BANK" ? "selected" : ""}`}
-                  onClick={() => setPaymentMethod("BANK")}
-                >
-                  <div className="payment-left">
-                    <input type="radio" checked={paymentMethod === "BANK"} readOnly />
-                    <span>Chuyển khoản Ngân hàng</span>
-                  </div>
-                  <img src="https://img.icons8.com/color/48/bank-transfer.png" className="payment-logo" alt="BANK" />
-                </div>
-
-                {/* 3. MOMO - NEW INTEGRATION */}
-                <div
-                  className={`payment-option ${paymentMethod === "MOMO" ? "selected" : ""}`}
-                  onClick={() => setPaymentMethod("MOMO")}
-                  style={{ borderColor: paymentMethod === 'MOMO' ? '#a50064' : '#eee', background: paymentMethod === 'MOMO' ? '#fff0f6' : '' }}
-                >
-                  <div className="payment-left">
-                    <input type="radio" checked={paymentMethod === "MOMO"} readOnly />
-                    <span style={{ color: '#a50064', fontWeight: 'bold' }}>Thanh toán bằng Ví MoMo</span>
-                  </div>
-                  <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" className="payment-logo" alt="MOMO" />
-                </div>
-
-              </div>
-
-              <button
-                className="btn-submit"
-                onClick={handleCheckout}
-              >
-                {paymentMethod === "MOMO" ? "THANH TOÁN MOMO" : "HOÀN TẤT ĐƠN HÀNG"}
+              <button className="btn-submit" onClick={handleCheckout}>
+                Xác nhận đặt hàng
               </button>
+
+              <p style={{ fontSize: 11, textAlign: 'center', color: '#aaa', marginTop: 20, lineHeight: 1.5 }}>
+                Nhấn "Đặt hàng" đồng nghĩa với việc bạn đồng ý tuân thủ <Link to="/terms" style={{ color: '#8B4513' }}>Điều khoản HaluCafe</Link>
+              </p>
             </div>
           </div>
         </div>
