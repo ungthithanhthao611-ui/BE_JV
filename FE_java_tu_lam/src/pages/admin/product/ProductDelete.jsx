@@ -9,6 +9,16 @@ import {
 } from "../../../api/productApi";
 import AdminLayout from "../../../components/admin/AdminLayout";
 
+const CLOUD_NAME = "dpetnxe5v";
+const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
+
+const getImg = (photo) => {
+  if (!photo) return ""; // để bạn show No Image
+  if (photo?.startsWith("http")) return photo; // đã là URL thì dùng luôn
+  // photo chỉ là tên file -> ghép thành URL Cloudinary
+  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
+};
+
 export default function ProductDelete() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -121,9 +131,10 @@ export default function ProductDelete() {
 
           <div style={productBox}>
             <img
-              src={`${import.meta.env.VITE_API_BASE_URL}/images/${currentProduct.photo}`}
+              src={getImg(currentProduct.photo)}
               alt={currentProduct.title}
               style={image}
+              onError={(e) => { e.currentTarget.src = "/no-image.png"; }}
             />
 
             <div>
@@ -168,9 +179,10 @@ export default function ProductDelete() {
                 <td>{p.title}</td>
                 <td>
                   <img
-                    src={`${import.meta.env.VITE_API_BASE_URL}/images/${p.photo}`}
+                    src={getImg(p.photo)}
                     alt={p.title}
                     width={50}
+                    onError={(e) => { e.currentTarget.src = "/no-image.png"; }}
                   />
                 </td>
                 <td>

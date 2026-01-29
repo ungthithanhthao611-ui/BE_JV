@@ -3,6 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { getAllProducts } from "../../../api/productApi";
 import AdminLayout from "../../../components/admin/AdminLayout";
 
+const CLOUD_NAME = "dpetnxe5v";
+const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
+
+const getImg = (photo) => {
+  if (!photo) return ""; // để bạn show No Image
+  if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
+  // photo chỉ là tên file -> ghép thành URL Cloudinary
+  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
+};
+
 export default function ProductList() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
@@ -70,10 +80,10 @@ export default function ProductList() {
 
                       <td style={{ textAlign: "center" }}>
                         <img
-                          src={p.photo?.startsWith("http") ? p.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${p.photo}`}
+                          src={getImg(p.photo)}
                           alt={p.title}
                           style={styles.image}
-                          onError={(e) => e.target.src = "https://via.placeholder.com/50?text=NoImage"}
+                          onError={(e) => { e.currentTarget.src = "/no-image.png"; }}
                         />
                       </td>
 

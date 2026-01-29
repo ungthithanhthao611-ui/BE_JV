@@ -4,6 +4,16 @@ import { getProductById, updateProduct } from "../../../api/productApi";
 import AdminLayout from "../../../components/admin/AdminLayout";
 import axios from "axios";
 
+const CLOUD_NAME = "dpetnxe5v";
+const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
+
+const getImg = (photo) => {
+  if (!photo) return ""; // để bạn show No Image
+  if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
+  // photo chỉ là tên file -> ghép thành URL Cloudinary
+  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
+};
+
 export default function ProductEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -189,7 +199,7 @@ export default function ProductEdit() {
               {form.photo && (
                 <div style={{ marginTop: 10, textAlign: "center", padding: 10, border: "1px dashed #ccc", borderRadius: 8 }}>
                   <img
-                    src={form.photo?.startsWith("http") ? form.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${form.photo}`}
+                    src={getImg(form.photo)}
                     alt="Preview"
                     style={{ maxHeight: 150, maxWidth: "100%", objectFit: "contain" }}
                     onError={(e) => e.target.style.display = 'none'}

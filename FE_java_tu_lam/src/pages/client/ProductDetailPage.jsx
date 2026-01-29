@@ -436,6 +436,16 @@ const cssStyles = `
   }
 `;
 
+const CLOUD_NAME = "dpetnxe5v";
+const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
+
+const getImg = (photo) => {
+  if (!photo) return ""; // để bạn show No Image
+  if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
+  // photo chỉ là tên file -> ghép thành URL Cloudinary
+  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
+};
+
 /* ================= COMPONENT ================= */
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -600,14 +610,9 @@ const ProductDetailPage = () => {
           {/* 1. ẢNH */}
           <div className="product-gallery">
             <img
-              src={product.photo?.startsWith("http") ? product.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${product.photo}`}
+              src={getImg(product.photo)}
               alt={product.title}
-              onError={(e) => {
-                const fallback = "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22500%22%20height%3D%22500%22%3E%3Crect%20fill%3D%22%23eaeaea%22%20width%3D%22100%25%22%20height%3D%22100%25%22%2F%3E%3Ctext%20fill%3D%22%23555%22%20font-family%3D%22sans-serif%22%20font-size%3D%2224%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dy%3D%22.3em%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E";
-                if (e.target.src !== fallback) {
-                  e.target.src = fallback;
-                }
-              }}
+              onError={(e) => { e.currentTarget.src = "/no-image.png"; }}
             />
           </div>
 

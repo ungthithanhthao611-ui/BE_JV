@@ -329,6 +329,16 @@ const cssStyles = `
 .stagger-row { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; }
 `;
 
+const CLOUD_NAME = "dpetnxe5v";
+const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
+
+const getImg = (photo) => {
+  if (!photo) return ""; // để bạn show No Image
+  if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
+  // photo chỉ là tên file -> ghép thành URL Cloudinary
+  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
+};
+
 export default function CartPage() {
   const navigate = useNavigate();
   const [cart, setCart] = useState({ items: [], totalPrice: 0 });
@@ -518,7 +528,7 @@ export default function CartPage() {
                     <td>
                       <div className="product-col">
                         <img
-                          src={item.photo?.startsWith("http") ? item.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${item.photo}`}
+                          src={getImg(item.photo)}
                           onError={(e) => e.target.src = "https://placehold.co/70"}
                           alt={item.title}
                         />
@@ -549,7 +559,7 @@ export default function CartPage() {
                   <td>
                     <div className="product-col">
                       <img
-                        src={giftItem.photo?.startsWith("http") ? giftItem.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${giftItem.photo}`}
+                        src={getImg(giftItem.photo)}
                         onError={(e) => e.target.src = "https://placehold.co/70"}
                         alt={giftItem.title}
                       />

@@ -73,6 +73,16 @@ const cssStyles = `
   .btn-submit:hover { background: #2c4d68; }
 `;
 
+const CLOUD_NAME = "dpetnxe5v";
+const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
+
+const getImg = (photo) => {
+  if (!photo) return ""; // để bạn show No Image
+  if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
+  // photo chỉ là tên file -> ghép thành URL Cloudinary
+  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
+};
+
 export default function CheckoutPage() {
   const navigate = useNavigate();
   // Get userId from session
@@ -323,10 +333,10 @@ export default function CheckoutPage() {
                   return (
                     <div className="order-item" key={item.productId}>
                       <img
-                        src={item.photo?.startsWith("http") ? item.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${item.photo}`}
+                        src={getImg(item.photo)}
                         alt={item.title}
                         className="order-img"
-                        onError={(e) => (e.target.src = "https://placehold.co/60")}
+                        onError={(e) => (e.target.src = "/no-image.png")}
                       />
                       <div className="order-info">
                         <div className="order-name">{item.title}</div>
@@ -342,10 +352,10 @@ export default function CheckoutPage() {
                   <div className="order-item gift-item">
                     {/* Hiển thị ảnh quà tặng từ link online */}
                     <img
-                      src={giftItem.photo?.startsWith("http") ? giftItem.photo : `${import.meta.env.VITE_API_BASE_URL}/images/${giftItem.photo}`}
+                      src={getImg(giftItem.photo)}
                       alt={giftItem.title}
                       className="order-img"
-                      onError={(e) => (e.target.src = "https://placehold.co/60")}
+                      onError={(e) => (e.target.src = "/no-image.png")}
                       style={{ borderColor: "#d32f2f" }}
                     />
 
