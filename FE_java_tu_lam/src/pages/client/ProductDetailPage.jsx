@@ -455,6 +455,9 @@ const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("M");
   const [note, setNote] = useState("");
+  const [activeTab, setActiveTab] = useState("info");
+  const [savedVouchers, setSavedVouchers] = useState({});
+  const [loadingRelated, setLoadingRelated] = useState(false);
 
   const SIZES = [
     { id: "S", label: "Nhỏ (S)", extra: 0 },
@@ -538,6 +541,18 @@ const ProductDetailPage = () => {
 
     } catch (err) {
       toast.error("Thất bại", "Không thể thêm vào giỏ hàng. Vui lòng thử lại!");
+    }
+  };
+
+  const handleIncrease = () => {
+    if (quantity < (product?.qty || 99)) {
+      setQuantity(prev => prev + 1);
+    }
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(prev => prev - 1);
     }
   };
 
