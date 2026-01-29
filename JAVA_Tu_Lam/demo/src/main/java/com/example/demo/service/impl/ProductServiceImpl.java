@@ -102,6 +102,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.Product;
 import com.example.demo.repository.ProductRepository;
+import com.example.demo.service.CloudinaryService;
 import com.example.demo.service.ProductService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -119,12 +120,14 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repo;
+    private final CloudinaryService cloudinaryService;
 
     // Thư mục lưu ảnh: project_root/uploads/images
     private final Path uploadPath = Paths.get("uploads/images");
 
-    public ProductServiceImpl(ProductRepository repo) {
+    public ProductServiceImpl(ProductRepository repo, CloudinaryService cloudinaryService) {
         this.repo = repo;
+        this.cloudinaryService = cloudinaryService;
 
         try {
             if (!Files.exists(uploadPath)) {
@@ -137,15 +140,6 @@ public class ProductServiceImpl implements ProductService {
 
     @org.springframework.beans.factory.annotation.Value("${app.storage.type}")
     private String storageType;
-
-    @org.springframework.beans.factory.annotation.Value("${cloudinary.cloud-name}")
-    private String cloudName;
-
-    @org.springframework.beans.factory.annotation.Value("${cloudinary.api-key}")
-    private String apiKey;
-
-    @org.springframework.beans.factory.annotation.Value("${cloudinary.api-secret}")
-    private String apiSecret;
 
     @Override
     public void create(Product p, MultipartFile image) throws IOException {
@@ -162,21 +156,7 @@ public class ProductServiceImpl implements ProductService {
 
         // 1. CLOUD STORAGE (Render)
         if ("cloud".equalsIgnoreCase(storageType)) {
-            try {
-                com.cloudinary.Cloudinary cloudinary = new com.cloudinary.Cloudinary(
-                        com.cloudinary.utils.ObjectUtils.asMap(
-                                "cloud_name", cloudName,
-                                "api_key", apiKey,
-                                "api_secret", apiSecret));
-
-                java.util.Map uploadResult = cloudinary.uploader().upload(image.getBytes(),
-                        com.cloudinary.utils.ObjectUtils.asMap("resource_type", "auto"));
-
-                return (String) uploadResult.get("secure_url"); // Trả về Full URL (https://...)
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new IOException("Upload to Cloudinary failed: " + e.getMessage());
-            }
+            return cloudinaryService.upload(image);
         }
 
         // 2. LOCAL STORAGE (XAMPP / Localhost)
