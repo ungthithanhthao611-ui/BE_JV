@@ -1,17 +1,17 @@
 export const CLOUD_NAME = "dpetnxe5v";
 export const FOLDER = "coffee";
-// Sử dụng URL tuyệt đối không có version để Cloudinary tự nhận diện
+// Sử dụng một proxy hoặc dịch vụ placeholder tin cậy hơn nếu Cloudinary vẫn lỗi
 export const FALLBACK = "https://res.cloudinary.com/dpetnxe5v/image/upload/coffee/no-image.png";
+const ALT_FALLBACK = "https://via.placeholder.com/400x400?text=No+Image";
 
 export const getImg = (photo) => {
     if (!photo || photo === "no-image.png") return FALLBACK;
     if (photo.startsWith("http")) return photo;
 
-    // ĐẢM BẢO ENCODE: Những tên file có dấu, khoảng trắng, hoặc kí tự đặc biệt (như (3)) 
-    // phải được encode thì link Cloudinary mới chạy được.
+    // Encode tên file để tránh lỗi kí tự đặc biệt (khoảng trắng, dấu ngoặc, ...)
     const encodedPhoto = encodeURIComponent(photo);
 
-    // Kiểm tra xem photo có chứa folder chưa
+    // Nếu photo đã chứa dấu / thì coi như đã có folder hoặc là path đầy đủ
     if (photo.includes("/")) {
         return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${photo}`;
     }
@@ -21,8 +21,24 @@ export const getImg = (photo) => {
 
 // Hàm xử lý lỗi ảnh dùng chung để chống loop tuyệt đối
 export const handleImgError = (e) => {
-    if (e.currentTarget.src !== FALLBACK) {
-        e.currentTarget.onerror = null;
-        e.currentTarget.src = FALLBACK;
+    const target = e.currentTarget;
+    const currentSrc = target.src;
+
+    // Nếu ảnh gốc lỗi -> thử FALLBACK của Cloudinary
+    if (currentSrc !== FALLBACK && !currentSrc.includes("placeholder")) {
+        console.warn("Image load failed, switching to fallback:", currentSrc);
+        target.onerror = null; // Tạm thời null để gán src mới
+        target.src = FALLBACK;
+
+        // Thiết lập một trình xử lý lỗi mới cho FALLBACK nếu nó cũng lỗi
+        target.onerror = () => {
+            console.error("Cloudinary fallback also failed, using placeholder");
+            target.onerror = null;
+            target.src = ALT_FALLBACK;
+        };
+    } else if (currentSrc === FALLBACK) {
+        // Nếu chính FALLBACK lỗi ngay từ đầu
+        target.onerror = null;
+        target.src = ALT_FALLBACK;
     }
 };
