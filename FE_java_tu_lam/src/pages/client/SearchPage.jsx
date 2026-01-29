@@ -4,16 +4,7 @@ import { searchProducts } from "../../api/productApi";
 
 const SUGGESTIONS = ["Trà", "Cà phê", "Bánh", "Trà sữa", "Nước ép"];
 
-const FALLBACK = "https://res.cloudinary.com/dpetnxe5v/image/upload/v1/coffee/no-image.png";
-const CLOUD_NAME = "dpetnxe5v";
-const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
-
-const getImg = (photo) => {
-  if (!photo) return FALLBACK;
-  if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
-  // photo chỉ là tên file -> ghép thành URL Cloudinary
-  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
-};
+import { getImg, FALLBACK } from "../../utils/imageUtils";
 
 export default function SearchPage() {
   const navigate = useNavigate();
@@ -245,7 +236,10 @@ export default function SearchPage() {
                       src={getImg(p.photo || p.image)}
                       alt={p.title || p.name}
                       style={styles.img}
-                      onError={(e) => { e.currentTarget.src = FALLBACK; }}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = FALLBACK;
+                      }}
                     />
                   </div>
 

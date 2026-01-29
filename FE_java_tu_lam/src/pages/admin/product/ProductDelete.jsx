@@ -9,16 +9,7 @@ import {
 } from "../../../api/productApi";
 import AdminLayout from "../../../components/admin/AdminLayout";
 
-const FALLBACK = "https://res.cloudinary.com/dpetnxe5v/image/upload/v1/coffee/no-image.png";
-const CLOUD_NAME = "dpetnxe5v";
-const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
-
-const getImg = (photo) => {
-  if (!photo) return FALLBACK;
-  if (photo?.startsWith("http")) return photo; // đã là URL thì dùng luôn
-  // photo chỉ là tên file -> ghép thành URL Cloudinary
-  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
-};
+import { getImg, FALLBACK } from "../../../utils/imageUtils";
 
 export default function ProductDelete() {
   const { id } = useParams();
@@ -135,7 +126,10 @@ export default function ProductDelete() {
               src={getImg(currentProduct.photo)}
               alt={currentProduct.title}
               style={image}
-              onError={(e) => { e.currentTarget.src = FALLBACK; }}
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = FALLBACK;
+              }}
             />
 
             <div>
@@ -183,7 +177,10 @@ export default function ProductDelete() {
                     src={getImg(p.photo)}
                     alt={p.title}
                     width={50}
-                    onError={(e) => { e.currentTarget.src = FALLBACK; }}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = FALLBACK;
+                    }}
                   />
                 </td>
                 <td>

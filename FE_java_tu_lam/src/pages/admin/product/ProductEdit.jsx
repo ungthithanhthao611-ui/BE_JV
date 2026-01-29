@@ -4,16 +4,7 @@ import { getProductById, updateProduct } from "../../../api/productApi";
 import AdminLayout from "../../../components/admin/AdminLayout";
 import axios from "axios";
 
-const FALLBACK = "https://res.cloudinary.com/dpetnxe5v/image/upload/v1/coffee/no-image.png";
-const CLOUD_NAME = "dpetnxe5v";
-const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
-
-const getImg = (photo) => {
-  if (!photo) return FALLBACK;
-  if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
-  // photo chỉ là tên file -> ghép thành URL Cloudinary
-  return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
-};
+import { getImg, FALLBACK } from "../../../utils/imageUtils";
 
 export default function ProductEdit() {
   const { id } = useParams();
@@ -203,7 +194,10 @@ export default function ProductEdit() {
                     src={getImg(form.photo)}
                     alt="Preview"
                     style={{ maxHeight: 150, maxWidth: "100%", objectFit: "contain" }}
-                    onError={(e) => { e.currentTarget.src = FALLBACK; }}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = FALLBACK;
+                    }}
                   />
                   <div style={{ fontSize: 12, color: "#888", marginTop: 5 }}>{form.photo}</div>
                 </div>
