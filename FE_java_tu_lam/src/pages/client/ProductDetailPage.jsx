@@ -436,7 +436,7 @@ const cssStyles = `
   }
 `;
 
-import { getImg, FALLBACK } from "../../utils/imageUtils";
+import { getImg, FALLBACK, handleImgError } from "../../utils/imageUtils";
 
 /* ================= COMPONENT ================= */
 const ProductDetailPage = () => {
@@ -598,10 +598,7 @@ const ProductDetailPage = () => {
             <img
               src={getImg(product.photo)}
               alt={product.title}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = FALLBACK;
-              }}
+              onError={handleImgError}
             />
           </div>
 

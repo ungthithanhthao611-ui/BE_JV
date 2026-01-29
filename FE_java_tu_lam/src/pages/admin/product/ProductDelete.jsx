@@ -9,7 +9,7 @@ import {
 } from "../../../api/productApi";
 import AdminLayout from "../../../components/admin/AdminLayout";
 
-import { getImg, FALLBACK } from "../../../utils/imageUtils";
+import { getImg, FALLBACK, handleImgError } from "../../../utils/imageUtils";
 
 export default function ProductDelete() {
   const { id } = useParams();
@@ -126,10 +126,7 @@ export default function ProductDelete() {
               src={getImg(currentProduct.photo)}
               alt={currentProduct.title}
               style={image}
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = FALLBACK;
-              }}
+              onError={handleImgError}
             />
 
             <div>
@@ -177,10 +174,7 @@ export default function ProductDelete() {
                     src={getImg(p.photo)}
                     alt={p.title}
                     width={50}
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = FALLBACK;
-                    }}
+                    onError={handleImgError}
                   />
                 </td>
                 <td>

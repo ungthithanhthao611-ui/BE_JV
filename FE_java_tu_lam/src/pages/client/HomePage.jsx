@@ -113,7 +113,7 @@ const cssStyles = `
   }
 `;
 
-import { getImg, FALLBACK } from "../../utils/imageUtils";
+import { getImg, FALLBACK, handleImgError } from "../../utils/imageUtils";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -218,10 +218,7 @@ const HomePage = () => {
                       className="menu-img"
                       src={getImg(item.photo)}
                       alt={item.title}
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = FALLBACK;
-                      }}
+                      onError={handleImgError}
                     />
                     <div className="menu-info">
                       <h4 title={item.title}>{item.title}</h4>

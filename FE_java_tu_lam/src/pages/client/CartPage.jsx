@@ -368,7 +368,7 @@ const cssStyles = `
 }
 `;
 
-import { getImg, FALLBACK } from "../../utils/imageUtils";
+import { getImg, FALLBACK, handleImgError } from "../../utils/imageUtils";
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -560,10 +560,7 @@ export default function CartPage() {
                       <div className="product-col">
                         <img
                           src={getImg(item.photo)}
-                          onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = FALLBACK;
-                          }}
+                          onError={handleImgError}
                           alt={item.title}
                         />
                         <div className="p-info">
@@ -596,10 +593,7 @@ export default function CartPage() {
                     <div className="product-col">
                       <img
                         src={getImg(giftItem.photo)}
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = FALLBACK;
-                        }}
+                        onError={handleImgError}
                         alt={giftItem.title}
                       />
                       <div>

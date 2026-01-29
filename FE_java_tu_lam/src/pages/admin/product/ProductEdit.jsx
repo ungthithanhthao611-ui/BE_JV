@@ -4,7 +4,7 @@ import { getProductById, updateProduct } from "../../../api/productApi";
 import AdminLayout from "../../../components/admin/AdminLayout";
 import axios from "axios";
 
-import { getImg, FALLBACK } from "../../../utils/imageUtils";
+import { getImg, FALLBACK, handleImgError } from "../../../utils/imageUtils";
 
 export default function ProductEdit() {
   const { id } = useParams();
@@ -194,10 +194,7 @@ export default function ProductEdit() {
                     src={getImg(form.photo)}
                     alt="Preview"
                     style={{ maxHeight: 150, maxWidth: "100%", objectFit: "contain" }}
-                    onError={(e) => {
-                      e.currentTarget.onerror = null;
-                      e.currentTarget.src = FALLBACK;
-                    }}
+                    onError={handleImgError}
                   />
                   <div style={{ fontSize: 12, color: "#888", marginTop: 5 }}>{form.photo}</div>
                 </div>

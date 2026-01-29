@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getAllProducts } from "../../../api/productApi";
 import AdminLayout from "../../../components/admin/AdminLayout";
 
-import { getImg, FALLBACK } from "../../../utils/imageUtils";
+import { getImg, FALLBACK, handleImgError } from "../../../utils/imageUtils";
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
@@ -75,10 +75,7 @@ export default function ProductList() {
                           src={getImg(p.photo)}
                           alt={p.title}
                           style={styles.image}
-                          onError={(e) => {
-                            e.currentTarget.onerror = null;
-                            e.currentTarget.src = FALLBACK;
-                          }}
+                          onError={handleImgError}
                         />
                       </td>
 

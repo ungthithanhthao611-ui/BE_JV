@@ -96,7 +96,7 @@ const cssStyles = `
   }
 `;
 
-import { getImg, FALLBACK } from "../../utils/imageUtils";
+import { getImg, FALLBACK, handleImgError } from "../../utils/imageUtils";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
@@ -380,10 +380,7 @@ export default function CheckoutPage() {
                         src={getImg(item.photo)}
                         alt={item.title}
                         className="order-img"
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = FALLBACK;
-                        }}
+                        onError={handleImgError}
                       />
                       <div className="order-info">
                         <div className="order-name">{item.title}</div>
@@ -400,10 +397,7 @@ export default function CheckoutPage() {
                       src={getImg(giftItem.photo)}
                       alt={giftItem.title}
                       className="order-img"
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = FALLBACK;
-                      }}
+                      onError={handleImgError}
                       style={{ borderRadius: '50%' }}
                     />
                     <div className="order-info">

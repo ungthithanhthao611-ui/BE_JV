@@ -504,7 +504,7 @@ const cssStyles = `
   }
 `;
 
-import { getImg, FALLBACK } from "../../utils/imageUtils";
+import { getImg, FALLBACK, handleImgError } from "../../utils/imageUtils";
 
 const OrderDetailPage = () => {
   const { id } = useParams();
@@ -616,11 +616,8 @@ const OrderDetailPage = () => {
     return map[method?.toUpperCase()] || method || "Không xác định";
   };
 
-  // Fallback image
-  const fallbackImage = (e) => {
-    e.currentTarget.onerror = null;
-    e.target.src = FALLBACK;
-  };
+  // Fallback image using central utility
+  const fallbackImage = handleImgError;
 
   // Calculate subtotal from items
   const subtotal = items.reduce((sum, item) => {

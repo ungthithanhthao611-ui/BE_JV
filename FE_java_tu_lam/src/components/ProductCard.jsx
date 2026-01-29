@@ -1,7 +1,7 @@
 import React from "react";
 import { useFavorites } from "../hooks/useFavorites"; // Import hook
 
-import { getImg, FALLBACK } from "../utils/imageUtils";
+import { getImg, FALLBACK, handleImgError } from "../utils/imageUtils";
 
 const ProductCard = ({ product, onClick }) => {
   // Sử dụng hook
@@ -26,10 +26,7 @@ const ProductCard = ({ product, onClick }) => {
         <img
           src={getImg(product.photo)}
           alt={product.title}
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = FALLBACK;
-          }}
+          onError={handleImgError}
         />
 
         {/* Nút Yêu thích (Tym) - Tự động xử lý toggle */}

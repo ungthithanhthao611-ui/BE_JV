@@ -4,7 +4,7 @@ import { searchProducts } from "../../api/productApi";
 
 const SUGGESTIONS = ["Trà", "Cà phê", "Bánh", "Trà sữa", "Nước ép"];
 
-import { getImg, FALLBACK } from "../../utils/imageUtils";
+import { getImg, FALLBACK, handleImgError } from "../../utils/imageUtils";
 
 export default function SearchPage() {
   const navigate = useNavigate();
@@ -236,10 +236,7 @@ export default function SearchPage() {
                       src={getImg(p.photo || p.image)}
                       alt={p.title || p.name}
                       style={styles.img}
-                      onError={(e) => {
-                        e.currentTarget.onerror = null;
-                        e.currentTarget.src = FALLBACK;
-                      }}
+                      onError={handleImgError}
                     />
                   </div>
 
