@@ -436,11 +436,12 @@ const cssStyles = `
   }
 `;
 
+const FALLBACK = "https://res.cloudinary.com/dpetnxe5v/image/upload/v1/coffee/no-image.png";
 const CLOUD_NAME = "dpetnxe5v";
 const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
 
 const getImg = (photo) => {
-  if (!photo) return ""; // để bạn show No Image
+  if (!photo) return FALLBACK;
   if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
   // photo chỉ là tên file -> ghép thành URL Cloudinary
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
@@ -450,100 +451,94 @@ const getImg = (photo) => {
 const ProductDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  // Load Hook Favorites
+  const userId = sessionStorage.getItem("userId");
   const { checkIsFavorite, toggleFavorite } = useFavorites();
 
   const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
-
-  // ✅ thêm tab discount
-  const [activeTab, setActiveTab] = useState("info");
-
   const [vouchers, setVouchers] = useState([]);
-  const [savedVouchers, setSavedVouchers] = useState({}); // Dùng object để lưu trạng thái "Đã lưu"
-
-  // ✅ STATE CHO SẢN PHẨM LIÊN QUAN
   const [relatedProducts, setRelatedProducts] = useState([]);
-  const [loadingRelated, setLoadingRelated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  /* ===== LOAD DATA ===== */
+  // Form states
+  const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState("M");
+  const [note, setNote] = useState("");
+
+  const SIZES = [
+    { id: "S", label: "Nhỏ (S)", extra: 0 },
+    { id: "M", label: "Vừa (M)", extra: 6000 },
+    { id: "L", label: "Lớn (L)", extra: 10000 },
+  ];
+
   useEffect(() => {
     window.scrollTo(0, 0);
     setLoading(true);
-    setRelatedProducts([]); // Reset related products khi đổi sản phẩm
+    setError(null);
 
-    getProductById(id)
-      .then((res) => {
-        setProduct(res.data);
-        setLoading(false);
+    Promise.all([getProductById(id), getPublicVouchers(), getAllProducts()])
+      .then(([productRes, voucherRes, allProductsRes]) => {
+        setProduct(productRes.data);
+        setVouchers(voucherRes.data || []);
 
-        // ✅ FETCH SẢN PHẨM LIÊN QUAN
-        if (res.data.categoryId) {
-          setLoadingRelated(true);
-          getAllProducts(res.data.categoryId)
-            .then((relatedRes) => {
-              // Lọc bỏ sản phẩm hiện tại và giới hạn 4 sản phẩm
-              const filtered = relatedRes.data
-                .filter((p) => p.id !== parseInt(id) && !p.deleted)
-                .slice(0, 4);
-              setRelatedProducts(filtered);
-              setLoadingRelated(false);
-            })
-            .catch((err) => {
-              console.log("Error fetching related products:", err);
-              setLoadingRelated(false);
-            });
-        }
+        // Mock related products
+        const all = allProductsRes.data || [];
+        setRelatedProducts(all.filter((p) => p.id !== parseInt(id)).slice(0, 4));
       })
-      .catch(() => setLoading(false));
-
-    getPublicVouchers()
-      .then((res) => setVouchers(res.data))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.error("Lỗi:", err);
+        setError("Không tìm thấy sản phẩm hoặc lỗi kết nối.");
+      })
+      .finally(() => setLoading(false));
   }, [id]);
 
-  // ✅ HÀM ĐIỀU HƯỚNG ĐẾN SẢN PHẨM LIÊN QUAN
-  const handleNavigateToProduct = (productId) => {
-    navigate(`/products/${productId}`);
-  };
+  if (loading)
+    return (
+      <div className="page-wrapper">
+        <Header />
+        <div className="container" style={{ padding: "100px 0" }}>
+          <Skeleton height={400} />
+          <div style={{ marginTop: 20 }}>
+            <Skeleton count={3} />
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
 
+  if (error)
+    return (
+      <div className="page-wrapper">
+        <Header />
+        <div className="container" style={{ textAlign: "center", padding: "100px 0" }}>
+          <h2 style={{ fontSize: 40 }}>🚫</h2>
+          <h3>{error}</h3>
+          <Link to="/" style={{ color: "#d32f2f", fontWeight: "bold" }}>
+            ← Quay lại trang chủ
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    );
 
-
-  const handleDecrease = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
-  };
-
-  const handleIncrease = () => {
-    if (product && quantity < product.qty) {
-      setQuantity(quantity + 1);
-    } else {
-      alert(`Chỉ còn ${product.qty} sản phẩm trong kho`);
-    }
-  };
+  const discountedPrice = product.price_root || product.price;
+  const sizeExtra = SIZES.find((s) => s.id === selectedSize)?.extra || 0;
+  const totalPrice = (product.price + sizeExtra) * quantity;
 
   const handleAddToCart = async () => {
-    const token = sessionStorage.getItem("token");
-    const storedUserId = sessionStorage.getItem("userId");
-
-    if (!token || !storedUserId) {
-      if (window.confirm("Bạn cần đăng nhập để mua hàng. Đi đến trang đăng nhập?")) {
-        window.location.href = "/login"; // Simple redirect since we are inside callback
-      }
+    if (!userId) {
+      alert("Bạn cần đăng nhập để mua hàng.");
+      navigate("/login");
       return;
     }
 
     try {
-      const salePrice = product.price_root > 0 ? product.price_root : product.price;
-      const discount = product.price_root > 0 ? product.price - product.price_root : 0;
-
       await addToCart({
-        userId: storedUserId,
+        userId,
         productId: product.id,
         quantity,
-        productPrice: salePrice,
-        discount,
+        size: selectedSize,
+        note,
       });
       window.dispatchEvent(new Event("cart_updated"));
 
@@ -612,7 +607,7 @@ const ProductDetailPage = () => {
             <img
               src={getImg(product.photo)}
               alt={product.title}
-              onError={(e) => { e.currentTarget.src = "/no-image.png"; }}
+              onError={(e) => { e.currentTarget.src = FALLBACK; }}
             />
           </div>
 

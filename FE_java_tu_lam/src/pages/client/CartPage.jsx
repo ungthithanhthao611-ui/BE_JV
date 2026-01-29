@@ -329,11 +329,12 @@ const cssStyles = `
 .stagger-row { animation: fadeInUp 0.5s ease-out forwards; opacity: 0; }
 `;
 
+const FALLBACK = "https://res.cloudinary.com/dpetnxe5v/image/upload/v1/coffee/no-image.png";
 const CLOUD_NAME = "dpetnxe5v";
 const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
 
 const getImg = (photo) => {
-  if (!photo) return ""; // để bạn show No Image
+  if (!photo) return FALLBACK;
   if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
   // photo chỉ là tên file -> ghép thành URL Cloudinary
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
@@ -529,7 +530,7 @@ export default function CartPage() {
                       <div className="product-col">
                         <img
                           src={getImg(item.photo)}
-                          onError={(e) => e.target.src = "https://placehold.co/70"}
+                          onError={(e) => e.target.src = FALLBACK}
                           alt={item.title}
                         />
                         <div className="p-name">{item.title}</div>
@@ -560,7 +561,7 @@ export default function CartPage() {
                     <div className="product-col">
                       <img
                         src={getImg(giftItem.photo)}
-                        onError={(e) => e.target.src = "https://placehold.co/70"}
+                        onError={(e) => e.target.src = FALLBACK}
                         alt={giftItem.title}
                       />
                       <div>

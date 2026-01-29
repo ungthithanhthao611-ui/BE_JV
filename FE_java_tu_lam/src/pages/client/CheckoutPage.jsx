@@ -73,11 +73,12 @@ const cssStyles = `
   .btn-submit:hover { background: #2c4d68; }
 `;
 
+const FALLBACK = "https://res.cloudinary.com/dpetnxe5v/image/upload/v1/coffee/no-image.png";
 const CLOUD_NAME = "dpetnxe5v";
 const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
 
 const getImg = (photo) => {
-  if (!photo) return ""; // để bạn show No Image
+  if (!photo) return FALLBACK;
   if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
   // photo chỉ là tên file -> ghép thành URL Cloudinary
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
@@ -336,7 +337,7 @@ export default function CheckoutPage() {
                         src={getImg(item.photo)}
                         alt={item.title}
                         className="order-img"
-                        onError={(e) => (e.target.src = "/no-image.png")}
+                        onError={(e) => (e.target.src = FALLBACK)}
                       />
                       <div className="order-info">
                         <div className="order-name">{item.title}</div>
@@ -355,7 +356,7 @@ export default function CheckoutPage() {
                       src={getImg(giftItem.photo)}
                       alt={giftItem.title}
                       className="order-img"
-                      onError={(e) => (e.target.src = "/no-image.png")}
+                      onError={(e) => (e.target.src = FALLBACK)}
                       style={{ borderColor: "#d32f2f" }}
                     />
 

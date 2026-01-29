@@ -1,11 +1,12 @@
 import React from "react";
 import { useFavorites } from "../hooks/useFavorites"; // Import hook
 
+const FALLBACK = "https://res.cloudinary.com/dpetnxe5v/image/upload/v1/coffee/no-image.png";
 const CLOUD_NAME = "dpetnxe5v";
 const FOLDER = "coffee"; // folder bạn upload trên Cloudinary
 
 const getImg = (photo) => {
-  if (!photo) return ""; // để bạn show No Image
+  if (!photo) return FALLBACK; // đã có fallback cloud
   if (photo.startsWith("http")) return photo; // đã là URL thì dùng luôn
   // photo chỉ là tên file -> ghép thành URL Cloudinary
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${FOLDER}/${encodeURIComponent(photo)}`;
@@ -34,7 +35,7 @@ const ProductCard = ({ product, onClick }) => {
         <img
           src={getImg(product.photo)}
           alt={product.title}
-          onError={(e) => { e.currentTarget.src = "/no-image.png"; }}
+          onError={(e) => { e.currentTarget.src = FALLBACK; }}
         />
 
         {/* Nút Yêu thích (Tym) - Tự động xử lý toggle */}
