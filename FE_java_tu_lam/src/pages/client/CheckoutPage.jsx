@@ -380,7 +380,10 @@ export default function CheckoutPage() {
                         src={getImg(item.photo)}
                         alt={item.title}
                         className="order-img"
-                        onError={(e) => (e.target.src = FALLBACK)}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = FALLBACK;
+                        }}
                       />
                       <div className="order-info">
                         <div className="order-name">{item.title}</div>
@@ -397,7 +400,10 @@ export default function CheckoutPage() {
                       src={getImg(giftItem.photo)}
                       alt={giftItem.title}
                       className="order-img"
-                      onError={(e) => (e.target.src = FALLBACK)}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = FALLBACK;
+                      }}
                       style={{ borderRadius: '50%' }}
                     />
                     <div className="order-info">

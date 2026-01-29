@@ -560,7 +560,10 @@ export default function CartPage() {
                       <div className="product-col">
                         <img
                           src={getImg(item.photo)}
-                          onError={(e) => e.target.src = FALLBACK}
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = FALLBACK;
+                          }}
                           alt={item.title}
                         />
                         <div className="p-info">
@@ -593,7 +596,10 @@ export default function CartPage() {
                     <div className="product-col">
                       <img
                         src={getImg(giftItem.photo)}
-                        onError={(e) => e.target.src = FALLBACK}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = FALLBACK;
+                        }}
                         alt={giftItem.title}
                       />
                       <div>
