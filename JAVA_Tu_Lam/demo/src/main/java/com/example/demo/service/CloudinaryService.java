@@ -20,7 +20,7 @@ public class CloudinaryService {
             Map<?, ?> res = cloudinary.uploader().upload(
                     file.getBytes(),
                     ObjectUtils.asMap(
-                            "folder", "teashop/uploads",
+                            "folder", "be_jv/products",
                             "resource_type", "auto"));
             return (String) res.get("secure_url"); // URL https
         } catch (Exception e) {
